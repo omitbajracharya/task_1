@@ -1,0 +1,15 @@
+<section id="notifications" *ngIf="notification && showingNotification" [@slideInOut]>
+  <div [class]="'notification-container bg-'+notification.color">
+    <div class="notification-header">
+      <h3 class="notification-title">{{ notification.title }}</h3>
+      <button class="close-button" (click)="hideNotification()">
+        <span class="material-symbols-outlined">
+          cancel
+        </span>
+      </button>
+    </div>
+    <div class="notification-body">
+      <p>{{ notification.body }}</p>
+    </div>
+  </div>
+</section>
