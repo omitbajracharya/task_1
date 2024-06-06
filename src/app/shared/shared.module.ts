@@ -24,4 +24,5 @@ import { CommonModule } from '@angular/common';
         SectionLayoutComponent
     ],
 })
+export class SharedModule { }
 
