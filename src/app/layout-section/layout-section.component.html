@@ -1,0 +1,13 @@
+<div [ngStyle]="{'border': '1px solid', 'border-color': props.borderColor }">
+  <div class="header" style="display: flex; justify-content: space-between;border-radius: 8px 8px 0 0; padding: 10px;" [ngStyle]="{'background-color': props.headerBackground}">
+    <div>{{props.mainTitle}}</div>
+    <div *ngIf="props.headerRight">{{props.rightContent}}</div>
+  </div>
+  <div class="content" style="text-align: left;" [ngStyle]="{
+    'background-color': props.contentBg,
+    'padding': props.contentPadding,
+    'height': props.height
+  }">
+    <ng-content></ng-content>
+  </div>
+</div>

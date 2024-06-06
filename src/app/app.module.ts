@@ -12,6 +12,7 @@ import { OrderComponent } from './features/order/order.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptorService } from './core/services/http-interceptor.service';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,6 +25,7 @@ import { HttpInterceptorService } from './core/services/http-interceptor.service
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
+    AppRoutingModule,
     SharedModule
   ],
   providers: [
