@@ -15,8 +15,7 @@ import { NotificationService } from './notification.service';
 export class NotificationComponent implements OnInit {
   notification!: Notification;
   notificationService = inject(NotificationService);
-  showingNotification: boolean = false;
-  constructor() {}
+  showingNotification = false;
 
   ngOnInit(): void {
     console.log('notification component initialized');

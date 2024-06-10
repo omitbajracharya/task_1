@@ -1,7 +1,7 @@
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 export const nonZero = (
   control: AbstractControl,
-): { [key: string]: boolean } | null => {
+): Record<string, boolean> | null => {
   if (control.value === 0) {
     return {
       zero: true,
@@ -10,10 +10,13 @@ export const nonZero = (
   return null;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const customValidator = (x: string, y: string): ValidatorFn => {
   return (controls: AbstractControl) => {
     if (controls) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const controlValue1 = controls.get('phone')!.value;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const controlValue2 = controls.get('dateOfBirth')!.value;
 
       // if (controlValue1 !== controlValue2) {

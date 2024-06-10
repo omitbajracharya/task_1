@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, from } from 'rxjs';
+export interface DownloadableFile {
+  url: string;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileReaderService {
-  constructor() {}
-
   static dataUrlToFile(dataUrl: string, fileName: string): File {
     const arr = dataUrl.split(',');
     const match = arr[0].match(/:(.*?);/);
@@ -20,7 +21,10 @@ export class FileReaderService {
     return new File([u8arr], fileName, { type: mime });
   }
 
-  static downloadFile(downloadFile: any, filename: string): Observable<void> {
+  static downloadFile(
+    downloadFile: DownloadableFile,
+    filename: string,
+  ): Observable<void> {
     return from(
       fetch(downloadFile.url)
         .then((response) => {

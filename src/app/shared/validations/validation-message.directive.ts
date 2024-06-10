@@ -10,10 +10,11 @@ import { NgControl } from '@angular/forms';
 import { combineLatestWith, fromEvent, startWith, takeWhile } from 'rxjs';
 import { validationMessages } from './validation-messages';
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[formControlName]',
 })
 export class ValidationMessageDirective implements OnInit, OnDestroy {
-  @Input() checkParent = false;
+  @Input() checkParent: boolean = false;
   private subscriptionState = true;
   errorLabel: HTMLLabelElement;
   constructor(

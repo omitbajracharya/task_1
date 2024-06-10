@@ -13,11 +13,11 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class HttpInterceptorService implements HttpInterceptor {
-  constructor() {}
-
   intercept(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     req: HttpRequest<any>,
     next: HttpHandler,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Observable<HttpEvent<any>> {
     if (!navigator.onLine) {
       // Store request locally for later processing

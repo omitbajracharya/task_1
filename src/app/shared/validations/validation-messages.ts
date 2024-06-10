@@ -1,6 +1,4 @@
-interface ValidationMessages {
-  [key: string]: any;
-}
+type ValidationMessages = Record<string, string>;
 export const validationMessages: ValidationMessages = {
   required: 'This field is required.',
   zero: 'Zero is not allowed.',

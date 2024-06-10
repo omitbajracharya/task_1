@@ -1,5 +1,11 @@
 echo "Checking Lint"
-# npm run lint
+npm run lint
 
 echo "Prettier"
 npm run format
+
+echo "build"
+npm run build
+
+# echo "test"
+# npm run test

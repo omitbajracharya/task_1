@@ -14,7 +14,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
   name: 'typeof',
 })
 export class TypeofPipe implements PipeTransform {
-  transform(value: any, args?: any): any {
+  transform(value: unknown): unknown {
     return typeof value;
   }
 }
@@ -25,16 +25,15 @@ export class TypeofPipe implements PipeTransform {
   styleUrls: ['./table-dynamic.component.css'],
 })
 export class TableDynamicComponent implements OnInit {
-  constructor() {}
   private readonly searchSubject = new Subject<string>();
   private searchSubscription!: Subscription;
-  public searchData: string = '';
-  public hideHeading: boolean = false;
-  @Output() emitData: EventEmitter<{ [key: string]: any }> = new EventEmitter<{
-    [key: string]: any;
-  }>();
+  public searchData = '';
+  public hideHeading = false;
+  @Output() emitData: EventEmitter<Record<string, unknown>> = new EventEmitter<
+    Record<string, unknown>
+  >();
   @Input() columns: TTableComponent[] = [];
-  @Input() data: any[] = [];
+  @Input() data: unknown[] = [];
   // @Output() output: EventEmitter<any> = new EventEmitter<any>();
 
   ngOnInit(): void {
