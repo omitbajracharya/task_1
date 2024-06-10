@@ -5,7 +5,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { ImageModule } from 'primeng/image';
 import { TableModule } from 'primeng/table';
-import {ProgressBarModule} from 'primeng/progressbar';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
@@ -33,7 +33,7 @@ import { CalendarModule } from 'primeng/calendar';
     InputSwitchModule,
     ToastModule,
     CalendarModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
   ],
   exports: [
     TooltipModule,
@@ -49,8 +49,8 @@ import { CalendarModule } from 'primeng/calendar';
     InputSwitchModule,
     ToastModule,
     ConfirmDialogModule,
-    CalendarModule
+    CalendarModule,
   ],
-  providers: [ConfirmationService]
+  providers: [ConfirmationService],
 })
-export class PrimengModule { }
+export class PrimengModule {}

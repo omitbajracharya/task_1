@@ -12,13 +12,13 @@ const routes: Routes = [
   { path: 'order', component: OrderComponent },
   { path: '404', component: A404PageComponent },
   {
-    path: "**",
-    redirectTo: "404",
+    path: '**',
+    redirectTo: '404',
   },
-]
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

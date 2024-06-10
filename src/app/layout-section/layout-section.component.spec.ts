@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SectionLayoutComponent } from './layout-section.component'
+import { SectionLayoutComponent } from './layout-section.component';
 
 describe('SectionLayoutComponent', () => {
   let component: SectionLayoutComponent;
@@ -7,10 +7,9 @@ describe('SectionLayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SectionLayoutComponent]
-    })
-    .compileComponents();
-    
+      declarations: [SectionLayoutComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(SectionLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,5 +1,5 @@
 export interface Notification {
-    title: string;
-    body: string;
-    color: string;
+  title: string;
+  body: string;
+  color: string;
 }

@@ -7,28 +7,27 @@ import { CommonModule } from '@angular/common';
 import { TableDynamicComponent } from './components/table-dynamic/table-dynamic.component';
 import { PrimengModule } from './primeng/primeng.module';
 @NgModule({
-    declarations: [
-        ValidationMessageDirective,
-        SectionLayoutComponent,
-        TableDynamicComponent
-    ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        RouterModule,
-        PrimengModule
-    ],
-    exports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        RouterModule,
-        ValidationMessageDirective,
-        SectionLayoutComponent,
-        TableDynamicComponent,
-        PrimengModule
-    ],
+  declarations: [
+    ValidationMessageDirective,
+    SectionLayoutComponent,
+    TableDynamicComponent,
+  ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    PrimengModule,
+  ],
+  exports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    ValidationMessageDirective,
+    SectionLayoutComponent,
+    TableDynamicComponent,
+    PrimengModule,
+  ],
 })
-export class SharedModule { }
-
+export class SharedModule {}

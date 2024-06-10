@@ -15,7 +15,7 @@ interface ISectionLayoutProps {
 @Component({
   selector: 'app-section-layout',
   templateUrl: './layout-section.component.html',
-  styleUrls: ['./layout-section.component.scss']
+  styleUrls: ['./layout-section.component.scss'],
 })
 export class SectionLayoutComponent implements OnInit {
   private defaultProps: ISectionLayoutProps = {
@@ -27,10 +27,10 @@ export class SectionLayoutComponent implements OnInit {
     hasHeader: true,
     headerRight: true,
     mainTitle: 'Main Title',
-    rightContent: 'Right Content'
+    rightContent: 'Right Content',
   };
 
-  @Input() public props: ISectionLayoutProps  = { ...this.defaultProps };
+  @Input() public props: ISectionLayoutProps = { ...this.defaultProps };
 
   ngOnInit() {
     this.props = { ...this.defaultProps, ...this.props };

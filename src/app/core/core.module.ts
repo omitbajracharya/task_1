@@ -4,18 +4,15 @@ import { NotificationComponent } from './components/notification/notification.co
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [
-    A404PageComponent,
-    NotificationComponent,
-  ],
+  declarations: [A404PageComponent, NotificationComponent],
   imports: [SharedModule],
-  exports: [NotificationComponent]
+  exports: [NotificationComponent],
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
     if (parentModule) {
       throw new Error(
-        'CoreModule is already loaded. Import it in the AppModule only'
+        'CoreModule is already loaded. Import it in the AppModule only',
       );
     }
   }

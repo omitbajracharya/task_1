@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable, from } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FileReaderService {
-
-  constructor() { }
+  constructor() {}
 
   static dataUrlToFile(dataUrl: string, fileName: string): File {
     const arr = dataUrl.split(',');
@@ -22,31 +21,38 @@ export class FileReaderService {
   }
 
   static downloadFile(downloadFile: any, filename: string): Observable<void> {
-    return from(fetch(downloadFile.url).then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.blob();
-    }).then(blob => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    }));
+    return from(
+      fetch(downloadFile.url)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.blob();
+        })
+        .then((blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        }),
+    );
   }
 
-  static readFile(file: File, type: string): Observable<string | ArrayBuffer | null> {
-    return new Observable<string | ArrayBuffer | null>(observer => {
+  static readFile(
+    file: File,
+    type: string,
+  ): Observable<string | ArrayBuffer | null> {
+    return new Observable<string | ArrayBuffer | null>((observer) => {
       const reader = new FileReader();
       reader.onload = () => {
         observer.next(reader.result);
         observer.complete();
       };
-      reader.onerror = error => observer.error(error);
+      reader.onerror = (error) => observer.error(error);
       if (type === 'DataURL') {
         reader.readAsDataURL(file);
       } else if (type === 'ArrayBuffer') {

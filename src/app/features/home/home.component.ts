@@ -5,10 +5,9 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-
   notificationService = inject(NotificationService);
   private router = inject(Router);
   notify() {
@@ -16,7 +15,7 @@ export class HomeComponent {
       title: 'Title',
       body: 'Lorem ipsum dolor sit amet, consectetur adip',
       color: 'danger',
-    })
+    });
   }
   openProducts() {
     this.router.navigate(['/product']);

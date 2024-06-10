@@ -3,8 +3,8 @@ import { Subject } from 'rxjs';
 import { Notification } from './notification';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class NotificationService {
-    notification$ = new Subject<Notification>();
+  notification$ = new Subject<Notification>();
 }
