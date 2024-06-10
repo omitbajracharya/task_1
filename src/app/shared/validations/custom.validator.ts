@@ -1,8 +1,10 @@
 import { AbstractControl, ValidatorFn } from '@angular/forms';
-export const nonZero = (control: AbstractControl): { [key: string]: boolean } | null => {
+export const nonZero = (
+    control: AbstractControl,
+): { [key: string]: boolean } | null => {
     if (control.value === 0) {
         return {
-            zero: true
+            zero: true,
         };
     }
     return null;
@@ -22,5 +24,5 @@ export const customValidator = (x: string, y: string): ValidatorFn => {
             // }
         }
         return null;
-    }
-}
+    };
+};

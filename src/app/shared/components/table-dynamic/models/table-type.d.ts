@@ -1,0 +1,31 @@
+type TTableComponent = {
+  title: string;
+  headerInputType?: string;
+  headerBindValue?: string;
+  bindValue?: string;
+  emptyValue?: string;
+  inputType?: string;
+  svgImg?: any;
+  clickEvent?: (...emittedData: any[]) => void;
+  parseValue?: (data: any) => any;
+  buttonType?: Array<{
+      name?: string;
+      bindValue?: string;
+      actionName?: string;
+      icon?: string;
+      customClasses?: string;
+      customStyles?: { [key: string]: any };
+      imgSrc?: string;
+      contentProjectName?: string;
+      tooltipMsg?: string;
+      clickEvent: (...emittedData: any[]) => void;
+      parseValue?: (data: any) => any;
+      checkForDisabledBtn?: (data: any) => any;
+  }>;
+  customStyles?: { [key: string]: any };
+  customClasses?: string | string[];
+  headerStyle?: { [key: string]: string };
+  isImage?: boolean;
+  isIcon?: boolean;
+  isToFixedFloating?: boolean;
+};

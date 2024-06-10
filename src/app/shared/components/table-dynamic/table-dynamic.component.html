@@ -1,0 +1,166 @@
+<table class="table-dynamic align-items-center w-100">
+    <thead style="background-color: #F3F6FA; position: sticky; top: 0; z-index: 1;" [ngStyle]="hideHeading == true ?{'display':  'none' }:{}">
+        <tr >
+            <th  class="head-column-table  text-dark text-sm"> S.N </th>  
+            <ng-container *ngFor="let col of columns">
+
+                <th class="head-column-table  text-dark text-sm "  [ngClass]="{'fixed-column': col.title === 'Action'}" [ngStyle]="col.title === 'Action' ? {'padding-right':'12px'}: {}">
+                    <span>{{ col.title }}</span>
+                    <span *ngIf="col.headerInputType === 'checkbox'">
+                        <input type="checkbox">
+                    </span>
+                </th>
+            </ng-container>
+        </tr>
+    </thead>
+    <tbody style="min-height: 300px;isolation: isolate;">
+        <tr *ngIf="!data?.length" style="height: max-content;">
+           <td  style="padding: 16px;vertical-align: baseline;" [attr.colspan]="columns.length">No data found</td> 
+        </tr>
+        
+            <tr *ngFor="let row of data;let i=index" style="font-weight: 500px;" >
+                <td  style="padding: 16px;vertical-align: baseline;">{{i+1}}</td>
+                <ng-container [ngTemplateOutlet]="rows" [ngTemplateOutletContext]="{ $implicit: row, index:i }"></ng-container>
+            </tr>
+           
+      
+    </tbody>
+</table>
+
+<ng-template #rows let-rowData let-rowIndex="index">
+   
+    <td  *ngFor="let tblStr of columns" style="padding: 16px; vertical-align: baseline;"  [ngClass]="{'fixed-column': tblStr.title === 'Action'}">
+        <div [style]="tblStr.customStyles" [ngStyle]="tblStr['inputType']==='button'?{'display':'flex'}:{}" class="">
+            <ng-container  *ngIf="!!tblStr['inputType']; else inputNotSent">
+                <ng-container *ngIf="tblStr['inputType']==='text'">
+                    <input type="text">
+                </ng-container>
+                <ng-container *ngIf="tblStr['inputType']==='switch'">
+                    <svg *ngIf="!(rowData?.active || rowData?.status || rowData?.shouldChange  || rowData?.isAvailable)" (click)="tblStr.clickEvent && tblStr.clickEvent($event, rowData)" width="37" height="24" viewBox="0 0 37 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0.5" width="36" height="24" rx="12" fill="#EBEFF5"/>
+                        <circle cx="12.5752" cy="12" r="7" fill="#919EAB"/>
+                        </svg>
+                <svg *ngIf="(rowData?.active || rowData?.status || rowData?.shouldChange || rowData?.isAvailable)"  (click)="tblStr.clickEvent && tblStr.clickEvent($event, rowData)" width="37" height="24" viewBox="0 0 37 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0.753751" y="0.253751" width="35.4925" height="23.4925" rx="11.7462" fill="#2B67B1"/>
+                    <rect x="0.753751" y="0.253751" width="35.4925" height="23.4925" rx="11.7462" stroke="url(#paint0_linear_866_17654)" stroke-width="0.507501"/>
+                    <circle cx="26.2451" cy="12" r="7" fill="white"/>
+                    <defs>
+                    <linearGradient id="paint0_linear_866_17654" x1="18.5" y1="0" x2="18.5" y2="24" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#135396"/>
+                    <stop offset="1" stop-color="#2B5178"/>
+                    </linearGradient>
+                    </defs>
+                    </svg>
+                                
+                </ng-container>
+
+                <ng-container *ngIf="tblStr['inputType']==='switch2'">
+                    <svg *ngIf="!(rowData?.isUnderMaintenance )" (click)="tblStr.clickEvent && tblStr.clickEvent($event, rowData)" width="37" height="24" viewBox="0 0 37 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0.5" width="36" height="24" rx="12" fill="#EBEFF5"/>
+                        <circle cx="12.5752" cy="12" r="7" fill="#919EAB"/>
+                        </svg>
+                <svg *ngIf="(rowData?.isUnderMaintenance)"  (click)="tblStr.clickEvent && tblStr.clickEvent($event, rowData)" width="37" height="24" viewBox="0 0 37 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0.753751" y="0.253751" width="35.4925" height="23.4925" rx="11.7462" fill="#2B67B1"/>
+                    <rect x="0.753751" y="0.253751" width="35.4925" height="23.4925" rx="11.7462" stroke="url(#paint0_linear_866_17654)" stroke-width="0.507501"/>
+                    <circle cx="26.2451" cy="12" r="7" fill="white"/>
+                    <defs>
+                    <linearGradient id="paint0_linear_866_17654" x1="18.5" y1="0" x2="18.5" y2="24" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#135396"/>
+                    <stop offset="1" stop-color="#2B5178"/>
+                    </linearGradient>
+                    </defs>
+                    </svg>
+                </ng-container>
+                <ng-container *ngIf="tblStr['inputType']==='date'">
+                   <span> {{tblStr.bindValue && rowData[tblStr.bindValue] | date: 'yyyy/MM/dd'}}</span>
+                </ng-container>
+               
+                <ng-container *ngIf="tblStr['inputType']==='image'">
+                   
+                    <div class="d-flex flex-column justify-content-center">
+                        <p-image  class="dialog-img" [src]="tblStr.bindValue && rowData[tblStr.bindValue]" alt="Image" width="50" [preview]="true" (onShow)="hideHeading=true" (onHide)="hideHeading=false" (click)="hideHeading=true"></p-image> 
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="tblStr['inputType']==='button'">
+                    <ng-container *ngFor="let btn of tblStr.buttonType" >
+                        <ng-container *ngIf="(btn &&  btn.name &&  ['eye','pencil','reconcile-icon','dustbin'].includes(btn!.name)) ; else otherBtns">       
+                                <!-- <div style="color: #4CAF50;display: contents;font-size: 24px;" *ngIf="!!btn.icon" (click)="btn.clickEvent({rowData,rowIndex})" [ngClass]="btn.customClasses??''" [style]="btn.customStyles ?? {}"  >
+                                    <i [class]="btn.icon"></i>
+                                </div> -->
+                                <div  class="tooltip-section" pInputText [pTooltip]="btn.tooltipMsg??'View'" tooltipPosition="bottom" style="display: inline-table; border: none;" *ngIf="btn?.name === 'eye'">
+
+                                    <svg  [ngClass]="btn.customClasses??''" [style]="btn.customStyles ?? {}" style="cursor: pointer;" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" (click)="btn.clickEvent({rowData,rowIndex})" >
+                                        <path d="M12.9833 10C12.9833 11.65 11.6499 12.9833 9.99993 12.9833C8.34993 12.9833 7.0166 11.65 7.0166 10C7.0166 8.35 8.34993 7.01667 9.99993 7.01667C11.6499 7.01667 12.9833 8.35 12.9833 10Z" stroke="#454F5B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M9.99987 16.8917C12.9415 16.8917 15.6832 15.1583 17.5915 12.1583C18.3415 10.9833 18.3415 9.00833 17.5915 7.83333C15.6832 4.83333 12.9415 3.1 9.99987 3.1C7.0582 3.1 4.31654 4.83333 2.4082 7.83333C1.6582 9.00833 1.6582 10.9833 2.4082 12.1583C4.31654 15.1583 7.0582 16.8917 9.99987 16.8917Z" stroke="#454F5B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                </div>  
+                                <div  class="tooltip-section" pInputText [pTooltip]="btn.tooltipMsg??'Reconcile'" tooltipPosition="bottom" style="display: inline-table; border: none;" *ngIf="btn?.name === 'reconcile-icon'">      
+                                    <svg (click)="btn.clickEvent({rowData,rowIndex})"  [ngClass]="btn.customClasses??''" [style]="btn.customStyles ?? {}"  *ngIf="btn?.name === 'reconcile-icon'" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor: pointer;">
+                                        <g id="vuesax/outline/command">
+                                        <g id="command">
+                                        <path id="Vector" d="M16 16.75H8C7.59 16.75 7.25 16.41 7.25 16V8C7.25 7.59 7.59 7.25 8 7.25H16C16.41 7.25 16.75 7.59 16.75 8V16C16.75 16.41 16.41 16.75 16 16.75ZM8.75 15.25H15.25V8.75H8.75V15.25Z" fill="#292D32"/>
+                                        <path id="Vector_2" d="M5 22.75C2.93 22.75 1.25 21.07 1.25 19C1.25 16.93 2.93 15.25 5 15.25H8C8.41 15.25 8.75 15.59 8.75 16V19C8.75 21.07 7.07 22.75 5 22.75ZM5 16.75C3.76 16.75 2.75 17.76 2.75 19C2.75 20.24 3.76 21.25 5 21.25C6.24 21.25 7.25 20.24 7.25 19V16.75H5Z" fill="#292D32"/>
+                                        <path id="Vector_3" d="M8 8.75H5C2.93 8.75 1.25 7.07 1.25 5C1.25 2.93 2.93 1.25 5 1.25C7.07 1.25 8.75 2.93 8.75 5V8C8.75 8.41 8.41 8.75 8 8.75ZM5 2.75C3.76 2.75 2.75 3.76 2.75 5C2.75 6.24 3.76 7.25 5 7.25H7.25V5C7.25 3.76 6.24 2.75 5 2.75Z" fill="#292D32"/>
+                                        <path id="Vector_4" d="M19 8.75H16C15.59 8.75 15.25 8.41 15.25 8V5C15.25 2.93 16.93 1.25 19 1.25C21.07 1.25 22.75 2.93 22.75 5C22.75 7.07 21.07 8.75 19 8.75ZM16.75 7.25H19C20.24 7.25 21.25 6.24 21.25 5C21.25 3.76 20.24 2.75 19 2.75C17.76 2.75 16.75 3.76 16.75 5V7.25Z" fill="#292D32"/>
+                                        <path id="Vector_5" d="M19 22.75C16.93 22.75 15.25 21.07 15.25 19V16C15.25 15.59 15.59 15.25 16 15.25H19C21.07 15.25 22.75 16.93 22.75 19C22.75 21.07 21.07 22.75 19 22.75ZM16.75 16.75V19C16.75 20.24 17.76 21.25 19 21.25C20.24 21.25 21.25 20.24 21.25 19C21.25 17.76 20.24 16.75 19 16.75H16.75Z" fill="#292D32"/>
+                                        </g>
+                                        </g> 
+                                        </svg>
+                                </div>
+                                <div  class="tooltip-section" pInputText [pTooltip]="btn.tooltipMsg??'Edit'" tooltipPosition="bottom" style="display: inline-table; border: none;" *ngIf="btn?.name === 'pencil'">                
+                                    <svg [ngClass]="btn.customClasses??''" [style]="btn.customStyles ?? {}"  width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" (click)="btn.clickEvent({rowData,rowIndex})" style="cursor: pointer;">
+                                        <path d="M11.05 3L4.20829 10.2417C3.94996 10.5167 3.69996 11.0583 3.64996 11.4333L3.34162 14.1333C3.23329 15.1083 3.93329 15.775 4.89996 15.6083L7.58329 15.15C7.95829 15.0833 8.48329 14.8083 8.74162 14.525L15.5833 7.28333C16.7666 6.03333 17.3 4.60833 15.4583 2.86667C13.625 1.14167 12.2333 1.75 11.05 3Z" stroke="#454F5B" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M9.9082 4.20833C10.2665 6.50833 12.1332 8.26667 14.4499 8.5" stroke="#454F5B" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M2.5 18.3333H17.5" stroke="#454F5B" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>   
+                                <div  class="tooltip-section" pInputText [pTooltip]="btn.tooltipMsg??'Delete'" tooltipPosition="bottom" style="display: inline-table; border: none;" *ngIf="btn?.name === 'dustbin'">    
+                                    <svg [ngClass]="btn.customClasses??''" [style]="btn.customStyles ?? {}"   (click)="btn.clickEvent({rowData,rowIndex})" style="cursor: pointer;width:20px" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M21.0002 6.72998C20.9802 6.72998 20.9502 6.72998 20.9202 6.72998C15.6302 6.19998 10.3502 5.99998 5.12016 6.52998L3.08016 6.72998C2.66016 6.76998 2.29016 6.46998 2.25016 6.04998C2.21016 5.62998 2.51016 5.26998 2.92016 5.22998L4.96016 5.02998C10.2802 4.48998 15.6702 4.69998 21.0702 5.22998C21.4802 5.26998 21.7802 5.63998 21.7402 6.04998C21.7102 6.43998 21.3802 6.72998 21.0002 6.72998Z" fill="#292D32"/>
+                                        <path d="M8.49977 5.72C8.45977 5.72 8.41977 5.72 8.36977 5.71C7.96977 5.64 7.68977 5.25 7.75977 4.85L7.97977 3.54C8.13977 2.58 8.35977 1.25 10.6898 1.25H13.3098C15.6498 1.25 15.8698 2.63 16.0198 3.55L16.2398 4.85C16.3098 5.26 16.0298 5.65 15.6298 5.71C15.2198 5.78 14.8298 5.5 14.7698 5.1L14.5498 3.8C14.4098 2.93 14.3798 2.76 13.3198 2.76H10.6998C9.63977 2.76 9.61977 2.9 9.46977 3.79L9.23977 5.09C9.17977 5.46 8.85977 5.72 8.49977 5.72Z" fill="#292D32"/>
+                                        <path d="M15.2099 22.7501H8.7899C5.2999 22.7501 5.1599 20.8201 5.0499 19.2601L4.3999 9.19007C4.3699 8.78007 4.6899 8.42008 5.0999 8.39008C5.5199 8.37008 5.8699 8.68008 5.8999 9.09008L6.5499 19.1601C6.6599 20.6801 6.6999 21.2501 8.7899 21.2501H15.2099C17.3099 21.2501 17.3499 20.6801 17.4499 19.1601L18.0999 9.09008C18.1299 8.68008 18.4899 8.37008 18.8999 8.39008C19.3099 8.42008 19.6299 8.77007 19.5999 9.19007L18.9499 19.2601C18.8399 20.8201 18.6999 22.7501 15.2099 22.7501Z" fill="#292D32"/>
+                                        <path d="M13.6601 17.25H10.3301C9.92008 17.25 9.58008 16.91 9.58008 16.5C9.58008 16.09 9.92008 15.75 10.3301 15.75H13.6601C14.0701 15.75 14.4101 16.09 14.4101 16.5C14.4101 16.91 14.0701 17.25 13.6601 17.25Z" fill="#292D32"/>
+                                        <path d="M14.5 13.25H9.5C9.09 13.25 8.75 12.91 8.75 12.5C8.75 12.09 9.09 11.75 9.5 11.75H14.5C14.91 11.75 15.25 12.09 15.25 12.5C15.25 12.91 14.91 13.25 14.5 13.25Z" fill="#292D32"/>
+                                        </svg>       
+                                   
+                                </div>
+                        </ng-container>
+                        <ng-template #otherBtns>
+                            <button style="text-align: start; margin: auto 0;" type="button"  (click)="btn.clickEvent({rowData,rowIndex})" [ngClass]="btn.customClasses??''" [style]="btn.customStyles ?? {}" [disabled]="btn.checkForDisabledBtn?.(rowData) ?? false" >
+                                <ng-container *ngIf="!!btn?.name;else otherContent">
+                                    {{btn.name}}
+                                </ng-container>
+                                <ng-template #otherContent>
+                                    <ng-container *ngIf="!!btn.icon">
+                                        <i [class]="btn.icon"></i>
+                                    </ng-container>
+                                    <ng-container *ngIf="!btn.icon && btn.bindValue">
+                                        {{ btn.parseValue?.(rowData[btn.bindValue]) ?? rowData[btn.bindValue] }}          <!-- parseValue function handles -> toggle button title -->                   
+                                    </ng-container>
+                                    <ng-container *ngIf="btn.contentProjectName ==='editButton'">
+    
+                                    </ng-container>
+                                    <!-- <ng-content select="[editButton]" *ngIf="btn.contentProjectName ==  'editButton'"></ng-content> -->
+                                </ng-template>
+    
+                            </button>
+                        </ng-template>
+                    </ng-container>
+                  
+                </ng-container>
+            </ng-container>    
+            <ng-template #inputNotSent>
+                <ng-container>
+                    <span *ngIf="!!tblStr.bindValue;">
+                        <input type="hidden" #cell [value]="(rowData[tblStr.bindValue]?.constructor.name === 'String') ? (rowData[tblStr.bindValue] || tblStr.emptyValue) : rowData[tblStr.bindValue] ?? tblStr.emptyValue">
+                        <!-- style="white-space: nowrap;" -->
+                        <span>
+                            {{ tblStr.parseValue?.(cell.value) ?? cell.value }}
+                        </span>
+                    </span>
+                </ng-container> 
+            </ng-template>
+        </div>    
+    </td>
+  
+</ng-template>

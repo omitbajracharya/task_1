@@ -4,16 +4,20 @@ import { RouterModule } from '@angular/router';
 import { ValidationMessageDirective } from './validations/validation-message.directive';
 import { SectionLayoutComponent } from '../layout-section/layout-section.component';
 import { CommonModule } from '@angular/common';
+import { TableDynamicComponent } from './components/table-dynamic/table-dynamic.component';
+import { PrimengModule } from './primeng/primeng.module';
 @NgModule({
     declarations: [
         ValidationMessageDirective,
-        SectionLayoutComponent
+        SectionLayoutComponent,
+        TableDynamicComponent
     ],
     imports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
+        PrimengModule
     ],
     exports: [
         CommonModule,
@@ -21,7 +25,9 @@ import { CommonModule } from '@angular/common';
         ReactiveFormsModule,
         RouterModule,
         ValidationMessageDirective,
-        SectionLayoutComponent
+        SectionLayoutComponent,
+        TableDynamicComponent,
+        PrimengModule
     ],
 })
 export class SharedModule { }

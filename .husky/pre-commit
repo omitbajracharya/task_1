@@ -1,0 +1,5 @@
+echo "Checking Lint"
+# npm run lint
+
+echo "Prettier"
+npm run format
