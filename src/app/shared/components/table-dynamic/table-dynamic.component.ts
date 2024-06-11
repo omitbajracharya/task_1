@@ -34,7 +34,7 @@ export class TableDynamicComponent implements OnInit {
   >();
   @Input() columns: TTableComponent[] = [];
   @Input() data: unknown[] = [];
-  // @Output() output: EventEmitter<any> = new EventEmitter<any>();
+  @Output() output: EventEmitter<unknown> = new EventEmitter<unknown>();
 
   ngOnInit(): void {
     this.searchSubscription = this.searchSubject
