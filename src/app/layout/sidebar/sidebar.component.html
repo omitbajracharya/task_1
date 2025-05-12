@@ -1,0 +1,66 @@
+<nav class="sidebar" [class.collapsed]="collapsed">
+  <div class="sidebar-header">
+    <h4 *ngIf="!collapsed">Menu</h4>
+    <i class="fas fa-bars" *ngIf="collapsed"></i>
+  </div>
+
+  <ul class="nav flex-column">
+    <!-- Dashboard -->
+    <li class="nav-item" *ngIf="isAdmin || isSupervisor">
+      <a
+        class="nav-link"
+        routerLink="/dashboard"
+        routerLinkActive="active"
+        [appTooltip]="collapsed ? [] : []"
+        [title]="collapsed ? 'Dashboard' : ''"
+        [isSubmenuItem]="collapsed"
+      >
+        <i class="fas fa-tachometer-alt"></i>
+        <span *ngIf="!collapsed">Dashboard</span>
+      </a>
+    </li>
+
+    <!-- Admin Menu -->
+    <li class="nav-item" *ngIf="isAdmin">
+      <a
+        class="nav-link"
+        [appTooltip]="collapsed ? adminMenuItems : []"
+        [isSubmenuItem]="collapsed"
+        routerLinkActive="active"
+      >
+        <i class="fas fa-user-shield"></i>
+        <span *ngIf="!collapsed">Admin</span>
+      </a>
+    </li>
+
+    <!-- Items -->
+    <li class="nav-item" *ngIf="isAdmin || isSupervisor">
+      <a
+        class="nav-link"
+        routerLink="/items"
+        routerLinkActive="active"
+        [appTooltip]="collapsed ? [] : []"
+        [title]="collapsed ? 'Items' : ''"
+        [isSubmenuItem]="collapsed"
+      >
+        <i class="fas fa-boxes"></i>
+        <span *ngIf="!collapsed">Items</span>
+      </a>
+    </li>
+
+    <!-- Sales -->
+    <li class="nav-item" *ngIf="isAdmin || isSalesPerson">
+      <a
+        class="nav-link"
+        routerLink="/sales"
+        routerLinkActive="active"
+        [appTooltip]="collapsed ? [] : []"
+        [title]="collapsed ? 'Sales' : ''"
+        [isSubmenuItem]="collapsed"
+      >
+        <i class="fas fa-cash-register"></i>
+        <span *ngIf="!collapsed">Sales</span>
+      </a>
+    </li>
+  </ul>
+</nav>

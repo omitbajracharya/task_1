@@ -6,7 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 @NgModule({
   declarations: [A404PageComponent, NotificationComponent],
   imports: [SharedModule],
-  exports: [NotificationComponent],
+  exports: [NotificationComponent, SharedModule],
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

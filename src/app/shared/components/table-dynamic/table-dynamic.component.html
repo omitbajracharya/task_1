@@ -1,9 +1,8 @@
 <table class="table-dynamic align-items-center w-100">
   <thead
     style="background-color: #f3f6fa; position: sticky; top: 0; z-index: 1"
-    [ngStyle]="hideHeading === true ? { display: 'none' } : {}"
+    [ngStyle]="hideHeading == true ? { display: 'none' } : {}"
   >
-  
     <tr>
       <th class="head-column-table text-dark text-sm">S.N</th>
       <ng-container *ngFor="let col of columns">
@@ -13,9 +12,23 @@
           [ngStyle]="col.title === 'Action' ? { 'padding-right': '12px' } : {}"
         >
           <span>{{ col.title }}</span>
+          <!-- <span *ngIf="col.headerInputType === 'text'">
+                      <div class="d-flex flex-row justify-content-between align-items-center gap-2">
+                      </div>
+                  </span> -->
+
+          <!-- <input type="text" (input)="onSearchQueryInput($event,col.bindValue)" style="padding-left:40px;"/> -->
+          <!-- <span> <img src="assets/images/arrow.png"
+                                  style="width: 20px; height: 20px; cursor: pointer;" /> </span> -->
           <span *ngIf="col.headerInputType === 'checkbox'">
             <input type="checkbox" />
           </span>
+          <!-- <span *ngIf="col.headerInputType === 'text'">
+
+                  </span> -->
+          <!-- <span *ngIf="col.showSearch">
+                      <input type="search">
+                  </span> -->
         </th>
       </ng-container>
     </tr>
@@ -58,12 +71,7 @@
         <ng-container *ngIf="tblStr['inputType'] === 'switch'">
           <svg
             *ngIf="
-              !(
-                rowData?.active ||
-                rowData?.status ||
-                rowData?.shouldChange ||
-                rowData?.isAvailable
-              )
+              !(tblStr && !!tblStr.bindValue && !!rowData?.[tblStr.bindValue])
             "
             (click)="tblStr.clickEvent && tblStr.clickEvent($event, rowData)"
             width="37"
@@ -77,10 +85,7 @@
           </svg>
           <svg
             *ngIf="
-              rowData?.active ||
-              rowData?.status ||
-              rowData?.shouldChange ||
-              rowData?.isAvailable
+              tblStr && !!tblStr.bindValue && !!rowData?.[tblStr.bindValue]
             "
             (click)="tblStr.clickEvent && tblStr.clickEvent($event, rowData)"
             width="37"
@@ -122,62 +127,26 @@
             </defs>
           </svg>
         </ng-container>
-
-        <ng-container *ngIf="tblStr['inputType'] === 'switch2'">
-          <svg
-            *ngIf="!rowData?.isUnderMaintenance"
-            (click)="tblStr.clickEvent && tblStr.clickEvent($event, rowData)"
-            width="37"
-            height="24"
-            viewBox="0 0 37 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect x="0.5" width="36" height="24" rx="12" fill="#EBEFF5" />
-            <circle cx="12.5752" cy="12" r="7" fill="#919EAB" />
-          </svg>
-          <svg
-            *ngIf="rowData?.isUnderMaintenance"
-            (click)="tblStr.clickEvent && tblStr.clickEvent($event, rowData)"
-            width="37"
-            height="24"
-            viewBox="0 0 37 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              x="0.753751"
-              y="0.253751"
-              width="35.4925"
-              height="23.4925"
-              rx="11.7462"
-              fill="#2B67B1"
-            />
-            <rect
-              x="0.753751"
-              y="0.253751"
-              width="35.4925"
-              height="23.4925"
-              rx="11.7462"
-              stroke="url(#paint0_linear_866_17654)"
-              stroke-width="0.507501"
-            />
-            <circle cx="26.2451" cy="12" r="7" fill="white" />
-            <defs>
-              <linearGradient
-                id="paint0_linear_866_17654"
-                x1="18.5"
-                y1="0"
-                x2="18.5"
-                y2="24"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stop-color="#135396" />
-                <stop offset="1" stop-color="#2B5178" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </ng-container>
+        <!-- 
+              <ng-container *ngIf="tblStr['inputType']==='switch2'">
+                  <svg *ngIf="!(rowData?.isUnderMaintenance )" (click)="tblStr.clickEvent && tblStr.clickEvent($event, rowData)" width="37" height="24" viewBox="0 0 37 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="0.5" width="36" height="24" rx="12" fill="#EBEFF5"/>
+                      <circle cx="12.5752" cy="12" r="7" fill="#919EAB"/>
+                      </svg>
+              <svg *ngIf="(rowData?.isUnderMaintenance)"  (click)="tblStr.clickEvent && tblStr.clickEvent($event, rowData)" width="37" height="24" viewBox="0 0 37 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="0.753751" y="0.253751" width="35.4925" height="23.4925" rx="11.7462" fill="#2B67B1"/>
+                  <rect x="0.753751" y="0.253751" width="35.4925" height="23.4925" rx="11.7462" stroke="url(#paint0_linear_866_17654)" stroke-width="0.507501"/>
+                  <circle cx="26.2451" cy="12" r="7" fill="white"/>
+                  <defs>
+                  <linearGradient id="paint0_linear_866_17654" x1="18.5" y1="0" x2="18.5" y2="24" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#135396"/>
+                  <stop offset="1" stop-color="#2B5178"/>
+                  </linearGradient>
+                  </defs>
+                  </svg>
+              </ng-container>
+            -->
+        <!-- style="white-space: nowrap;" -->
         <ng-container *ngIf="tblStr['inputType'] === 'date'">
           <span>
             {{
@@ -213,8 +182,8 @@
               "
             >
               <!-- <div style="color: #4CAF50;display: contents;font-size: 24px;" *ngIf="!!btn.icon" (click)="btn.clickEvent({rowData,rowIndex})" [ngClass]="btn.customClasses??''" [style]="btn.customStyles ?? {}"  >
-                                    <i [class]="btn.icon"></i>
-                                </div> -->
+                                  <i [class]="btn.icon"></i>
+                              </div> -->
               <div
                 class="tooltip-section"
                 pInputText

@@ -1,0 +1,31 @@
+/* app.component.css */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  display: flex;
+}
+
+.content-area {
+  flex: 1;
+  padding: 20px;
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+
+.content-area.sidebar-collapsed {
+  margin-left: 60px;
+}
+
+@media (max-width: 768px) {
+  .content-area {
+    margin-left: 60px;
+  }
+
+  .content-area.sidebar-collapsed {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,74 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">Sales System</a>
+    <button class="navbar-toggler" type="button" (click)="toggleCollapse()">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" [class.show]="!isCollapsed">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- Dashboard Link -->
+        <li class="nav-item" *ngIf="isAdmin || isSupervisor">
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active"
+            >Dashboard</a
+          >
+        </li>
+
+        <!-- Admin Links -->
+        <li class="nav-item dropdown" *ngIf="isAdmin">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="adminDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+          >
+            Admin
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" routerLink="/users">Users</a></li>
+            <li><a class="dropdown-item" routerLink="/roles">Roles</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" routerLink="/items">Items</a></li>
+          </ul>
+        </li>
+
+        <!-- Supervisor Links -->
+        <li class="nav-item" *ngIf="isSupervisor">
+          <a class="nav-link" routerLink="/items" routerLinkActive="active"
+            >Items</a
+          >
+        </li>
+
+        <!-- Sales Links -->
+        <li class="nav-item" *ngIf="isSalesPerson">
+          <a class="nav-link" routerLink="/sales" routerLinkActive="active"
+            >Sales</a
+          >
+        </li>
+      </ul>
+
+      <!-- User Info and Logout -->
+      <div class="d-flex">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="userDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+            >
+              {{ currentUser?.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

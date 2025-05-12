@@ -1,7 +1,12 @@
-<router-outlet></router-outlet>
-<app-notification></app-notification>
-<!-- <app-section-layout>
-    <div>
-        Hello, world
-    </div>
-</app-section-layout> -->
+<!-- app.component.html -->
+<div class="app-container">
+  <app-header (toggleSidebar)="sidebar.toggleCollapse()"></app-header>
+
+  <div class="main-content">
+    <app-sidebar #sidebar [(collapsed)]="isSidebarCollapsed"></app-sidebar>
+
+    <main class="content-area" [class.sidebar-collapsed]="isSidebarCollapsed">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

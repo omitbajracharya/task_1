@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-interface ISectionLayoutProps {
+export interface ISectionLayoutProps {
   borderColor: string;
   headerBackground: string;
   contentBg: string;
