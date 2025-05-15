@@ -1,0 +1,25 @@
+/* app-footer.component.scss */
+.inventory-footer {
+    background: linear-gradient(to right, #1e1e2f, #2b2b3d);
+    color: #ccc;
+    padding: 1rem 2rem;
+    text-align: center;
+    font-size: 0.875rem;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.3);
+    position: relative;
+  
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: auto;
+      flex-wrap: wrap;
+  
+      .version {
+        font-size: 0.75rem;
+        opacity: 0.6;
+      }
+    }
+  }
+  

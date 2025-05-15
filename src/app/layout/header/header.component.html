@@ -9,43 +9,9 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <!-- Dashboard Link -->
         <li class="nav-item" *ngIf="isAdmin || isSupervisor">
-          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active"
-            >Dashboard</a
-          >
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
         </li>
-
-        <!-- Admin Links -->
-        <li class="nav-item dropdown" *ngIf="isAdmin">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="adminDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-          >
-            Admin
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" routerLink="/users">Users</a></li>
-            <li><a class="dropdown-item" routerLink="/roles">Roles</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" routerLink="/items">Items</a></li>
-          </ul>
-        </li>
-
-        <!-- Supervisor Links -->
-        <li class="nav-item" *ngIf="isSupervisor">
-          <a class="nav-link" routerLink="/items" routerLinkActive="active"
-            >Items</a
-          >
-        </li>
-
-        <!-- Sales Links -->
-        <li class="nav-item" *ngIf="isSalesPerson">
-          <a class="nav-link" routerLink="/sales" routerLinkActive="active"
-            >Sales</a
-          >
-        </li>
+        <!-- Other Links... -->
       </ul>
 
       <!-- User Info and Logout -->

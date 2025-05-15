@@ -1,1 +1,107 @@
 @import "./css/bootstrap.min.css";
+:root {
+    --primary-color: #4361ee;
+    --primary-dark: #3a56d4;
+    --error-color: #f94144;
+    --light-gray: #f8f9fa;
+    --dark-gray: #6c757d;
+    --white: #ffffff;
+    --black: #212529;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  :root {
+    --primary-color: #4361ee;
+    --primary-dark: #3a56d4;
+    --error-color: #f94144;
+    --light-gray: #f8f9fa;
+    --dark-gray: #6c757d;
+    --white: #ffffff;
+    --black: #212529;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  html, body {
+    height: 100%;
+  }
+  
+  .container-fluid {
+    height: 100%;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .form-group label {
+    font-weight: 500;
+    color: var(--black);
+  }
+  
+  .form-group input {
+    padding: 0.75rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+  }
+  
+  .form-group input.invalid {
+    border-color: var(--error-color);
+  }
+  
+  .password-input {
+    position: relative;
+  }
+  
+  .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--dark-gray);
+    padding: 5px;
+  }
+  
+  .error-message {
+    color: var(--error-color);
+    font-size: 0.875rem;
+  }
+  
+  
+  .alert {
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+  }
+  
+  .alert-error {
+    background-color: rgba(249, 65, 68, 0.1);
+    color: var(--error-color);
+    border: 1px solid rgba(249, 65, 68, 0.3);
+  }
+  
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--white);
+    animation: spin 1s ease-in-out infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }

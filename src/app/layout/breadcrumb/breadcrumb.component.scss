@@ -1,0 +1,16 @@
+.breadcrumb {
+    background-color: transparent;
+    margin-bottom: 20px;
+    padding: 0;
+  }
+  
+  .breadcrumb-item {
+    display: inline-block;
+    font-size: 14px;
+  }
+  
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: '>';
+    padding: 0 8px;
+  }
+      

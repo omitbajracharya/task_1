@@ -1,1 +1,74 @@
-<p>login works!</p>
+<div class="login-wrapper">
+    <div class="login-card">
+  
+      <!-- Left Side: Login Form -->
+      <div class="login-form-section">
+        <div class="brand-logo">
+          <i class="bi bi-box-seam-fill logo-icon"></i>
+        </div>
+  
+        <div class="login-header">
+          <h2>Inventory Management System</h2>
+          <p>Please sign in to continue</p>
+        </div>
+  
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+          <!-- Username -->
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input 
+              type="text" 
+              id="username" 
+              formControlName="username"
+              placeholder="Enter username"
+              [class.invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+            <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="error-message">
+              Username is required
+            </div>
+          </div>
+  
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-input">
+              <input 
+                [type]="showPassword ? 'text' : 'password'" 
+                id="password" 
+                formControlName="password"
+                placeholder="Enter password"
+                [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+              <i 
+                class="bi eye-icon" 
+                [ngClass]="showPassword ? 'bi-eye-fill' : 'bi-eye-slash-fill'" 
+                (click)="togglePasswordVisibility()">
+              </i>
+            </div>
+            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-message">
+              Password is required
+            </div>
+          </div>
+  
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="alert alert-error">
+            {{ errorMessage }}
+          </div>
+  
+          <!-- Submit -->
+          <button 
+            type="submit" 
+            class="login-button"
+            [disabled]="loginForm.invalid || isLoading">
+            <span *ngIf="!isLoading">Login</span>
+            <span *ngIf="isLoading" class="spinner"></span>
+          </button>
+        </form>
+      </div>
+  
+      <!-- Right Side: Image -->
+      <div class="login-image-section">
+        <img src="assets/images/inventory.jpg" alt="Inventory Image" />
+      </div>
+  
+    </div>
+  </div>
+  

@@ -1,90 +1,86 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Role } from '../models/role.model';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { ApiService } from './api.service';
+import { Role } from '../models/role.model';
 import { User } from '../models/user.model';
-import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<User | null> =
-    new BehaviorSubject<User | null>(null);
-  public currentUser: Observable<User | null> =
-    this.currentUserSubject.asObservable();
+  private readonly TOKEN_KEY = 'auth_token';
+  private jwtHelper = new JwtHelperService();
+
+  // BehaviorSubject to hold current user data
+  private currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  public currentUser: Observable<User | null> = this.currentUserSubject.asObservable();
 
   constructor(
-    private api: ApiService,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: object,
-  ) {
-    // Initialize with user from localStorage if available
-
-    if (this.isBrowser()) {
-      const storedUser = localStorage.getItem('currentUser');
-      this.currentUserSubject = new BehaviorSubject<User | null>(
-        storedUser ? JSON.parse(storedUser) : null,
-      );
-      this.currentUser = this.currentUserSubject.asObservable();
-    }
-  }
-  private isBrowser(): boolean {
-    return isPlatformBrowser(this.platformId);
-  }
-
-  public get currentUserValue(): User | null {
-    return this.currentUserSubject.value;
-  }
+    private api: ApiService
+  ) {}
 
   login(username: string, password: string): Observable<boolean> {
-    return new Observable((observer) => {
-      this.api.getUsers().subscribe((users) => {
-        const user = users.find(
-          (u) =>
-            u.username === username && u.password === password && u.isActive,
+    return this.api.getUsers().pipe(
+      map((users:any) => {
+        const user = users.find((u:any) => 
+          u.username === username && 
+          u.password === password
         );
-
+        
         if (user) {
-          // Store user details in localStorage
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          observer.next(true);
-        } else {
-          observer.next(false);
+          const mockToken = this.generateMockToken(user);
+          localStorage.setItem(this.TOKEN_KEY, mockToken);
+          this.currentUserSubject.next(user);  // Set the logged-in user
+          return true;
         }
-        observer.complete();
-      });
-    });
+        return false;
+      })
+    );
   }
 
   logout(): void {
-    // Remove user from localStorage
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
+    localStorage.removeItem(this.TOKEN_KEY);
+    this.currentUserSubject.next(null);  // Clear the current user on logout
     this.router.navigate(['/login']);
   }
 
-  hasRole(role: Role): boolean {
-    const user = this.currentUserValue;
-    return user?.roleId === role;
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
   }
 
   isLoggedIn(): boolean {
-    return this.currentUserValue !== null;
+    const token = this.getToken();
+    return token ? !this.jwtHelper.isTokenExpired(token) : false;
   }
 
-  // Helper methods for specific roles
-  isAdmin(): boolean {
-    return this.hasRole(Role.Admin);
+  getCurrentUserRole(): Role | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const decoded = this.jwtHelper.decodeToken(token);
+      return decoded?.role || null;
+    } catch {
+      return null;
+    }
   }
 
-  isSupervisor(): boolean {
-    return this.hasRole(Role.Supervisor);
+  hasRole(requiredRole: Role): boolean {
+    return this.getCurrentUserRole() === requiredRole;
   }
 
-  isSalesPerson(): boolean {
-    return this.hasRole(Role.SalesPerson);
+  private generateMockToken(user: User): string {
+    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+    const payload = btoa(JSON.stringify({
+      sub: user.id,
+      username: user.username,
+      role: user.role,
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 3600
+    }));
+    return `${header}.${payload}.mock-signature`;
   }
 }

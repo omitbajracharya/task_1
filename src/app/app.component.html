@@ -1,12 +1,17 @@
-<!-- app.component.html -->
 <div class="app-container">
-  <app-header (toggleSidebar)="sidebar.toggleCollapse()"></app-header>
+  <app-header
+  (toggleSidebar)="toggleSidebarIfVisible()"
+  class="sticky-header"
+  *ngIf="!hideHeader()"
+></app-header>
 
   <div class="main-content">
-    <app-sidebar #sidebar [(collapsed)]="isSidebarCollapsed"></app-sidebar>
+    <app-sidebar #sidebar [(collapsed)]="isSidebarCollapsed" *ngIf="!hideSidebar()"></app-sidebar>
 
     <main class="content-area" [class.sidebar-collapsed]="isSidebarCollapsed">
+      <app-breadcrumb *ngIf="!hideBreadcrumb()"></app-breadcrumb>
       <router-outlet></router-outlet>
     </main>
   </div>
+  <app-footer *ngIf="!hideFooter()"></app-footer>
 </div>

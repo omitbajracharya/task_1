@@ -28,6 +28,8 @@ import { AddItemComponent } from './features/item-list/add-item/add-item.compone
 import { EditItemComponent } from './features/item-list/edit-item/edit-item.component';
 import { SalesComponent } from './features/sales/sales.component';
 import { TooltipDirective } from './shared/directives/tooltip.directive';
+import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
+import { FooterComponent } from './layout/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import { TooltipDirective } from './shared/directives/tooltip.directive';
     EditItemComponent,
     SalesComponent,
     TooltipDirective,
+    BreadcrumbComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

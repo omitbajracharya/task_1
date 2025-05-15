@@ -1,38 +1,42 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../shared/services/auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  username = '';
-  password = '';
-  error = '';
-  returnUrl = '';
+  loginForm: FormGroup;
+  showPassword = false;
+  isLoading = false;
+  errorMessage: string = '';
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {
-    // Get return URL from route parameters or default to '/'
-    this.returnUrl =
-      this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+  constructor(private fb: FormBuilder) {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
   }
 
-  login() {
-    this.error = '';
-    this.authService
-      .login(this.username, this.password)
-      .subscribe((success) => {
-        if (success) {
-          this.router.navigateByUrl(this.returnUrl);
-        } else {
-          this.error = 'Invalid username or password';
-        }
-      });
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  onSubmit() {
+    if (this.loginForm.invalid) return;
+    this.isLoading = true;
+
+    // Simulated login
+    setTimeout(() => {
+      const { username, password } = this.loginForm.value;
+      if (username === 'admin' && password === 'admin') {
+        this.errorMessage = '';
+        alert('Login success');
+      } else {
+        this.errorMessage = 'Invalid credentials';
+      }
+      this.isLoading = false;
+    }, 1000);
   }
 }

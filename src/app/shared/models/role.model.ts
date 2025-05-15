@@ -1,5 +1,11 @@
 export enum Role {
   Admin = 1,
-  Supervisor = 2,
-  SalesPerson = 3,
+  Supervisor,
+  SalesPerson
+}
+
+export interface RoleData {
+  id: Role;
+  name: string;
+  permissions: string[];
 }

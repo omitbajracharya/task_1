@@ -1,9 +1,15 @@
+import { Role } from './role.model';
+
 export class User {
-  constructor(
-    public id: number,
-    public username: string,
-    public password: string,
-    public roleId: number,
-    public isActive: boolean = true,
-  ) {}
+  id: number;
+  username: string;
+  password: string;
+  role: Role;
+
+  constructor(id: number, username: string, password: string, role: Role) {
+    this.id = id;
+    this.username = username;
+    this.password = password;
+    this.role = role;
+  }
 }

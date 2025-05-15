@@ -27,9 +27,11 @@ export class ApiService {
       this.initializeData();
     }
   }
+
   private isBrowser(): boolean {
     return isPlatformBrowser(this.platformId);
   }
+
   // Simulate network delay
   private getRandomDelay(): number {
     return Math.floor(Math.random() * 2000) + 500; // 500-2500ms delay
@@ -128,9 +130,7 @@ export class ApiService {
   // Role CRUD
   getRoles(): Observable<RoleData[]> {
     if (this.isBrowser()) {
-      const roles: RoleData[] = JSON.parse(
-        localStorage.getItem('roles') || '[]',
-      );
+      const roles: RoleData[] = JSON.parse(localStorage.getItem('roles') || '[]');
       return of(roles).pipe(delay(this.getRandomDelay()));
     }
     return of([]);
@@ -204,9 +204,9 @@ export class ApiService {
 
       // Update item stock
       const items: Item[] = JSON.parse(localStorage.getItem('items') || '[]');
-      const item = items.find((i: Item) => i.id === sale?.['itemId']);
+      const item = items.find((i: Item) => i.id === sale.itemId);
       if (item) {
-        item.stock -= sale?.['quantity'];
+        item.stock -= sale.quantity;
         localStorage.setItem('items', JSON.stringify(items));
       }
 
@@ -271,6 +271,6 @@ export class ApiService {
   }
 
   private generateId(items: { id: number }[]): number {
-    return items.length > 0 ? Math.max(...items.map((i) => i.id)) + 1 : 1;
+    return items.length > 0 ? Math.max(...items.map(i => i.id)) + 1 : 1;
   }
 }
