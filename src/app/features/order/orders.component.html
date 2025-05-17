@@ -1,27 +1,31 @@
-<div class="container p-4">
-    <h2 *ngIf="!isEdit && router.url === '/orders/add'">Add Order</h2>
-    <h2 *ngIf="isEdit">Edit Order</h2>
-    <h2 *ngIf="!isEdit && router.url === '/orders'">Orders List</h2>
-  
-    <!-- FORM -->
-    <form *ngIf="router.url.includes('add') || isEdit" (ngSubmit)="save()" class="space-y-3" style="display: flex;flex-direction: column;gap: 20px;">
-      <input type="text" class="form-control" [(ngModel)]="order.customerName" name="customerName" placeholder="Customer Name" required />
-      <input type="text" class="form-control" [(ngModel)]="order.itemName" name="itemName" placeholder="Item Name" required />
-      <input type="number" class="form-control" [(ngModel)]="order.quantity" name="quantity" placeholder="Quantity" required />
-      <input type="number" class="form-control" [(ngModel)]="order.price" name="price" placeholder="Price" required />
-      <div class="flex gap-3" style="display: flex;gap: 10px;">
-        <button class="btn btn-success" type="submit">{{ isEdit ? 'Update' : 'Add' }} Order</button>
-        <button class="btn btn-secondary" type="button" (click)="cancel()">Cancel</button>
+<div class="admin-wrapper">
+  <!-- Header -->
+  <div class="admin-header">
+    <h2><i class="bi bi-cart"></i> Order Management</h2>
+    <button *ngIf="!showForm" class="btn btn-primary" (click)="openAddModal()">
+      <i class="bi bi-plus-lg"></i> Add Order
+    </button>
+  </div>
+
+  <!-- Order List -->
+  <div *ngIf="!showForm" class="admin-card">
+    <div class="search-bar">
+      <div class="search-input">
+        <i class="bi bi-search"></i>
+        <input 
+          type="text" 
+          placeholder="Search orders..." 
+          [(ngModel)]="searchTerm"
+          (input)="filterOrders()"
+        >
       </div>
-    </form>
-  
-    <!-- LIST -->
-    <div *ngIf="!router.url.includes('add') && !isEdit" class="mt-4">
-      <a routerLink="/orders/add" class="btn btn-primary mb-3">+ Add Order</a>
-      <table class="table table-bordered">
+    </div>
+
+    <div class="table-responsive">
+      <table class="orders-table">
         <thead>
           <tr>
-            <th>#</th>
+            <th>ID</th>
             <th>Customer</th>
             <th>Item</th>
             <th>Qty</th>
@@ -32,21 +36,101 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let order of orders">
+          <tr *ngFor="let order of filteredOrders">
             <td>{{ order.id }}</td>
             <td>{{ order.customerName }}</td>
             <td>{{ order.itemName }}</td>
             <td>{{ order.quantity }}</td>
-            <td>{{ order.price }}</td>
-            <td>{{ order.total }}</td>
-            <td>{{ order.date | date:'short' }}</td>
-            <td>
-              <button class="btn btn-sm btn-warning me-2" [routerLink]="['/orders/edit', order.id]">Edit</button>
-              <button class="btn btn-sm btn-danger" (click)="delete(order.id)">Delete</button>
+            <td>{{ order.price | currency }}</td>
+            <td>{{ order.calculateTotal() | currency }}</td>
+            <td>{{ order.date | date:'shortDate' }}</td>
+            <td class="actions">
+              <button class="btn-edit" (click)="openEditModal(order)">
+                <i class="bi bi-pencil-square"></i> Edit
+              </button>
+              <button class="btn-delete" (click)="confirmDelete(order)">
+                <i class="bi bi-trash"></i> Delete
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredOrders.length === 0">
+            <td colspan="8" class="no-results">
+              No orders found
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-  
+
+  <!-- Order Form Modal -->
+  <div class="modal" [class.show]="showForm">
+    <div class="modal-content">
+      <span class="close" (click)="closeForm()">&times;</span>
+      <h3>{{ isEditMode ? 'Edit Order' : 'Add New Order' }}</h3>
+      
+      <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" style="display: flex;
+          flex-direction: column;
+          gap: 8px;">
+        <div class="form-group">
+          <label>Customer Name</label>
+          <input type="text" formControlName="customerName" class="form-control">
+          <small *ngIf="orderForm.get('customerName')?.invalid && orderForm.get('customerName')?.touched">
+            Customer name is required
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Item Name</label>
+          <input type="text" formControlName="itemName" class="form-control">
+          <small *ngIf="orderForm.get('itemName')?.invalid && orderForm.get('itemName')?.touched">
+            Item name is required
+          </small>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Quantity</label>
+            <input type="number" formControlName="quantity" class="form-control" min="1">
+            <small *ngIf="orderForm.get('quantity')?.invalid && orderForm.get('quantity')?.touched">
+              Quantity must be at least 1
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label>Unit Price</label>
+            <input type="number" formControlName="price" class="form-control" min="0.01" step="0.01">
+            <small *ngIf="orderForm.get('price')?.invalid && orderForm.get('price')?.touched">
+              Price must be greater than 0
+            </small>
+          </div>
+        </div>
+
+        <div class="form-actions" style="display: flex;gap: 10px;">
+          <button type="button" class="btn btn-secondary" (click)="closeForm()">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="orderForm.invalid">
+            {{ isEditMode ? 'Update' : 'Save' }} Order
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal" [class.show]="showDeleteModal">
+    <div class="modal-content">
+      <h3>Confirm Deletion</h3>
+      <p>Are you sure you want to delete order for <strong>{{ selectedOrder?.customerName }}</strong>?</p>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="showDeleteModal = false">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-danger" (click)="deleteOrder()">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
