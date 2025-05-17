@@ -1,8 +1,8 @@
+$header-icon: 2rem;
+
 .navbar {
-  width: 100%;
   padding: 0.5rem 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #007bff;
 }
 
 .navbar-brand {
@@ -22,12 +22,141 @@
 .dropdown-menu {
   border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1050;
 }
 
 .dropdown-item {
   padding: 0.5rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .dropdown-item:hover {
   background-color: #f8f9fa;
+}
+
+.headerProfile {
+  background: #475467;
+  padding: 3px 6px 3px 3px;
+  border-radius: 900px;
+
+  .profileImg {
+    position: relative;
+    height: $header-icon;
+    width: $header-icon;
+    display: inline-block;
+    text-align: center;
+    line-height: $header-icon;
+    color: white;
+
+    i {
+      font-size: 1.2rem;
+    }
+
+    .status-dot {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      height: 10px;
+      width: 10px;
+      background-color: #4caf50;
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+  }
+
+  .badge {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    background: #5c6ac4;
+    color: #f2f4f7;
+    width: fit-content;
+  }
+
+  .headerProfileDropdown {
+    min-width: 14rem;
+
+    .profileCard {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.5rem 0.75rem;
+      gap: 10px;
+    }
+
+    .profileCardInfo {
+      display: flex;
+      flex-direction: column;
+
+      .profileName {
+        font-weight: 500;
+        margin: 0;
+      }
+
+      .badge {
+        @extend .badge;
+      }
+    }
+  }
+}
+
+/* Dropdown container */
+.nav-item.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown button styling */
+.nav-link.dropdown-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+}
+
+/* Dropdown menu (hidden by default) */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  min-width: 220px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+  padding: 8px 0;
+  margin-top: 5px;
+}
+
+/* Show dropdown on hover */
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Add slight delay for smoother transition */
+.nav-item.dropdown .dropdown-menu {
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+/* Dropdown base styles */
+.dropdown-menu {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: auto; /* Ensure dropdown is interactive */
+}
+
+.dropdown-menu.show {
+  display: block;
+  opacity: 1;
+}
+
+/* For touch devices */
+@media (pointer: coarse) {
+  .dropdown-menu {
+    transition: none; /* Remove transitions for mobile */
+  }
 }

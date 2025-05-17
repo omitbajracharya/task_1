@@ -1,66 +1,63 @@
-<nav class="sidebar" [class.collapsed]="collapsed">
+<aside class="sidebar" [class.collapsed]="isSidebarCollapsed">
+  <!-- Header -->
   <div class="sidebar-header">
-    <h4 *ngIf="!collapsed">Menu</h4>
-    <i class="fas fa-bars" *ngIf="collapsed"></i>
+    <div class="logo-container">
+      <span class="logo-icon">IA</span>
+      <h1 class="logo-text" *ngIf="!isSidebarCollapsed">Inventory App</h1>
+    </div>
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <i [ngClass]="isSidebarCollapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left'"></i>
+    </button>
   </div>
 
-  <ul class="nav flex-column">
-    <!-- Dashboard -->
-    <li class="nav-item" *ngIf="isAdmin || isSupervisor">
-      <a
-        class="nav-link"
-        routerLink="/dashboard"
-        routerLinkActive="active"
-        [appTooltip]="collapsed ? [] : []"
-        [title]="collapsed ? 'Dashboard' : ''"
-        [isSubmenuItem]="collapsed"
-      >
-        <i class="fas fa-tachometer-alt"></i>
-        <span *ngIf="!collapsed">Dashboard</span>
-      </a>
-    </li>
+  <!-- Navigation -->
+  <nav class="sidebar-nav">
+    <ul style="list-style-type: none;">
+      <ng-container *ngFor="let item of menuItems; let i = index; trackBy: trackByFn">
+        <li *ngIf="isVisible(item)" class="nav-item" [attr.title]="isSidebarCollapsed ? item.label : null">
+          <a class="nav-link"
+   [routerLink]="item.children ? null : item.route"
+   routerLinkActive="active"
+   [appTooltip]="isSidebarCollapsed ? item.label : ''"
+   routerLinkActive="active"
+   (click)="!isSidebarCollapsed && item.children && toggleMenu(i)">
 
-    <!-- Admin Menu -->
-    <li class="nav-item" *ngIf="isAdmin">
-      <a
-        class="nav-link"
-        [appTooltip]="collapsed ? adminMenuItems : []"
-        [isSubmenuItem]="collapsed"
-        routerLinkActive="active"
-      >
-        <i class="fas fa-user-shield"></i>
-        <span *ngIf="!collapsed">Admin</span>
-      </a>
-    </li>
+  <i class="fa-solid" [ngClass]="'fa-' + item.icon"></i>
+  <span *ngIf="!isSidebarCollapsed">{{ item.label }}</span>
+  <!-- Correctly conditionally render expand/collapse icon -->
+  <ng-container *ngIf="!isSidebarCollapsed && item.children">
+  <i *ngIf="expandedMenus[i]" class="fa-solid fa-angle-up expand-icon"></i>
+  <i *ngIf="!expandedMenus[i]" class="fa-solid fa-angle-down expand-icon"></i>
+</ng-container>
+  
+</a>
 
-    <!-- Items -->
-    <li class="nav-item" *ngIf="isAdmin || isSupervisor">
-      <a
-        class="nav-link"
-        routerLink="/items"
-        routerLinkActive="active"
-        [appTooltip]="collapsed ? [] : []"
-        [title]="collapsed ? 'Items' : ''"
-        [isSubmenuItem]="collapsed"
-      >
-        <i class="fas fa-boxes"></i>
-        <span *ngIf="!collapsed">Items</span>
-      </a>
-    </li>
 
-    <!-- Sales -->
-    <li class="nav-item" *ngIf="isAdmin || isSalesPerson">
-      <a
-        class="nav-link"
-        routerLink="/sales"
-        routerLinkActive="active"
-        [appTooltip]="collapsed ? [] : []"
-        [title]="collapsed ? 'Sales' : ''"
-        [isSubmenuItem]="collapsed"
-      >
-        <i class="fas fa-cash-register"></i>
-        <span *ngIf="!collapsed">Sales</span>
-      </a>
-    </li>
-  </ul>
-</nav>
+          <!-- Submenus only if expanded and not collapsed -->
+          <ul *ngIf="item.children && !isSidebarCollapsed && expandedMenus[i]" class="sub-menu">
+            <li *ngFor="let child of item.children" class="sub-menu-item">
+              <a [routerLink]="child.route" class="sub-menu-link" routerLinkActive="active">
+                <i class="fa-solid" [ngClass]="'fa-' + child.icon"></i>
+                {{ child.label }}
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ng-container>
+    </ul>
+  </nav>
+
+  <!-- User Info -->
+  <div class="user-profile">
+    <div class="avatar" [attr.title]="isSidebarCollapsed ? 'John Doe' : null">JD</div>
+
+    <div *ngIf="!isSidebarCollapsed" class="user-info">
+      <div class="user-name">omit.com.np</div>
+      <div class="user-role">{{ userRole | titlecase }}</div>
+    </div>
+
+    <button class="logout-btn" (click)="logout()" [attr.title]="isSidebarCollapsed ? 'Logout' : null">
+      <i class="fa-solid fa-right-from-bracket"></i>
+    </button>
+  </div>
+</aside>

@@ -1,0 +1,143 @@
+<!-- Nepali and English Date picker from and to Miti within the fiscal year. -->
+<form (ngSubmit)="setDateForApiCall()" [formGroup]="inputForm">
+  <div class="card">
+    <div class="card-body">
+      <div class="custom-grid">
+        <div class="custom-grid grid-5">
+           <!-- Dynamic fields section -->
+        <ng-container *ngFor="let field of dynamicFields">
+          <div class="">
+            <div class="form-group">
+              <div class="form-wrapper">
+                <label class="form-label">{{ field.label }}</label>
+                
+                <!-- Text input -->
+                <input *ngIf="field.type === 'text' || field.type === 'number' || field.type === 'date'"
+                  class="form-control"
+                  [formControlName]="field.name"
+                  [type]="field.type"
+                  [placeholder]="field.label"
+                />
+                
+                <!-- Select input -->
+                <ng-select *ngIf="isSelectField(field)"
+                  [items]="field.options || []"
+                  [multiple]="false"
+                  [searchable]="true"
+                  [bindLabel]="field.bindLabel || 'name'"
+                  [bindValue]="field.bindValue || 'id'"
+                  [formControlName]="field.name"
+                  [placeholder]="field.label"
+                >
+                  <ng-template let-item="item" ng-option-tmp>
+                    <div [title]="item[field.bindLabel || 'name']">
+                      {{ item[field.bindLabel || 'name'] }}
+                    </div>
+                  </ng-template>
+                </ng-select>
+                
+                <!-- Checkbox -->
+                <input *ngIf="field.type === 'checkbox'"
+                  type="checkbox"
+                  [formControlName]="field.name"
+                />
+              </div>
+            </div>
+          </div>
+        </ng-container>
+          <div class="">
+            <div class="form-group">
+              <div class="form-wrapper">
+                <label class="form-label">
+                  {{ "FromDate" | translate }}
+                </label>
+                <input
+                  (change)="fromdateChangeFn()"
+                  class="form-control"
+                  formControlName="fromDate"
+                  placeholder=""
+                  type="date"
+                  [min]="this.fiscalYearInADBeginning"
+                  [max]="this.inputForm.value.toDate || this.fiscalYearInADEnd"
+                  />
+                  <!-- this.inputForm.value.toMiti || this.fiscalYearInBSEnd -->
+                  <!-- [max]="currentDate" -->
+              </div>
+            </div>
+          </div>
+          <div class="">
+            <div class="form-group">
+              <div class="form-wrapper">
+                <label class="form-label">From Miti </label>
+                <div class="input-wrapper d-flex justify-content-center">
+                  <!-- (focus)="onDateInputFocus()" -->
+                  <input
+                    (change)="fromMitiChangeFn()"
+                    class="form-control"
+                    formControlName="fromMiti"
+                    id="nepali-datepicker4"
+                    mitiFormat
+                    placeholder="YYYY-MM-DD"
+                    type="text"
+                  />
+                  <i class="fas fa-calendar-alt input-icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="">
+            <div class="form-group">
+              <div class="form-wrapper">
+                <label class="form-label"> {{ "To Date" | translate }} </label>
+                <input
+                  (change)="todateChangeFn()"
+                  class="form-control"
+                  formControlName="toDate"
+                  placeholder=""
+                  type="date"
+                  [min]="inputForm.value.fromDate || this.fiscalYearInADBeginning"
+                  [max]="this.fiscalYearInADEnd"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="">
+            <div class="form-group">
+              <div class="form-wrapper">
+                <label class="form-label">To Miti </label>
+                <div class="input-wrapper d-flex justify-content-center">
+                  <!-- (focus)="onDateInputFocus()" -->
+                  <input
+                    (change)="toMitiChangeFn()"
+                    class="form-control"
+                    formControlName="toMiti"
+                    id="nepali-datepicker-to3"
+                    mitiFormat
+                    placeholder="YYYY-MM-DD"
+                    type="text"
+                    [max]="currentNepaliDate"
+                  />
+                  <i class="fas fa-calendar-alt input-icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-primary" type="submit">Search</button>
+          </div>
+        </div>
+        <div class="">
+          <!-- (click)="inputForm.reset()" -->
+          <button
+          (click)="resetToOriginal()"
+            class="btn btn-primary"
+            type="button"
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

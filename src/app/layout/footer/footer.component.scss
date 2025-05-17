@@ -6,7 +6,8 @@
     text-align: center;
     font-size: 0.875rem;
     box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.3);
-    position: relative;
+    position: sticky;
+    bottom: 0px;
   
     .footer-content {
       display: flex;

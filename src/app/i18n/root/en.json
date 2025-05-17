@@ -1,0 +1,13 @@
+{
+    "login": {
+      "title": "Login",
+      "username": "Username",
+      "password": "Password",
+      "passwordForgot": "Forgot password ?",
+      "signinButton": "Sign In"
+    },
+    "error": {
+      "userError": "Please enter a user name",
+     "passwordError": "Please enter password"
+    }
+  }

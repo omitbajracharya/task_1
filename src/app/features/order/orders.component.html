@@ -1,0 +1,52 @@
+<div class="container p-4">
+    <h2 *ngIf="!isEdit && router.url === '/orders/add'">Add Order</h2>
+    <h2 *ngIf="isEdit">Edit Order</h2>
+    <h2 *ngIf="!isEdit && router.url === '/orders'">Orders List</h2>
+  
+    <!-- FORM -->
+    <form *ngIf="router.url.includes('add') || isEdit" (ngSubmit)="save()" class="space-y-3" style="display: flex;flex-direction: column;gap: 20px;">
+      <input type="text" class="form-control" [(ngModel)]="order.customerName" name="customerName" placeholder="Customer Name" required />
+      <input type="text" class="form-control" [(ngModel)]="order.itemName" name="itemName" placeholder="Item Name" required />
+      <input type="number" class="form-control" [(ngModel)]="order.quantity" name="quantity" placeholder="Quantity" required />
+      <input type="number" class="form-control" [(ngModel)]="order.price" name="price" placeholder="Price" required />
+      <div class="flex gap-3" style="display: flex;gap: 10px;">
+        <button class="btn btn-success" type="submit">{{ isEdit ? 'Update' : 'Add' }} Order</button>
+        <button class="btn btn-secondary" type="button" (click)="cancel()">Cancel</button>
+      </div>
+    </form>
+  
+    <!-- LIST -->
+    <div *ngIf="!router.url.includes('add') && !isEdit" class="mt-4">
+      <a routerLink="/orders/add" class="btn btn-primary mb-3">+ Add Order</a>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Customer</th>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td>{{ order.id }}</td>
+            <td>{{ order.customerName }}</td>
+            <td>{{ order.itemName }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.price }}</td>
+            <td>{{ order.total }}</td>
+            <td>{{ order.date | date:'short' }}</td>
+            <td>
+              <button class="btn btn-sm btn-warning me-2" [routerLink]="['/orders/edit', order.id]">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="delete(order.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

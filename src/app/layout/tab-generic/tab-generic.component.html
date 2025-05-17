@@ -1,0 +1,4 @@
+<mat-tab-group class="tab_menu" (selectedTabChange)="tabClick($event)" [(selectedIndex)]="selectedIndex"
+    *ngIf="tabList.length>1">
+    <mat-tab [label]="tab.menu" *ngFor="let tab of tabList"></mat-tab>
+</mat-tab-group>

@@ -142,4 +142,20 @@
       transform: rotate(360deg);
     }
   }
+
+  .register-link {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+  
+    a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 500;
+  
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
   

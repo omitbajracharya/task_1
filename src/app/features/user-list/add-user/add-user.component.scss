@@ -1,0 +1,132 @@
+$primary-color: rgb(139, 139, 209);
+
+.admin-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 60px);
+  background: #f5f7fa;
+  padding: 20px;
+}
+
+.admin-card {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: $primary-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+}
+
+.form-group {
+  margin-bottom: 20px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #34495e;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+  }
+
+  .password-field {
+    position: relative;
+
+    i.bi {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      cursor: pointer;
+      transform: translateY(-50%);
+      color: #7f8c8d;
+    }
+  }
+
+  small {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+  }
+}
+
+.alert-error {
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.1);
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin: 15px 0;
+}
+
+.alert-success {
+  color: #27ae60;
+  background: rgba(39, 174, 96, 0.1);
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin: 15px 0;
+}
+
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+
+  button {
+    flex: 1;
+    padding: 12px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 16px;
+
+    &[type="submit"] {
+      background: $primary-color;
+      color: white;
+      border: none;
+
+      &:disabled {
+        background: #bdc3c7;
+        cursor: not-allowed;
+      }
+
+      &:not(:disabled):hover {
+        background: darken($primary-color, 10%);
+      }
+    }
+
+    &.btn-secondary {
+      background: #ecf0f1;
+      color: #34495e;
+      border: 1px solid #ddd;
+
+      &:hover {
+        background: darken(#ecf0f1, 5%);
+      }
+    }
+  }
+}

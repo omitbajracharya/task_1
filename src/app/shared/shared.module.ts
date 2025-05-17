@@ -6,11 +6,15 @@ import { SectionLayoutComponent } from '../layout-section/layout-section.compone
 import { CommonModule } from '@angular/common';
 import { TableDynamicComponent } from './components/table-dynamic/table-dynamic.component';
 import { PrimengModule } from './primeng/primeng.module';
+import { TableGenericComponent } from '../layout/table-generic/table-generic.component';
+import { TruncatePipe } from './pipes/truncate.pipe';
 @NgModule({
   declarations: [
     ValidationMessageDirective,
     SectionLayoutComponent,
     TableDynamicComponent,
+    TableGenericComponent,
+    TruncatePipe
   ],
   imports: [
     CommonModule,
@@ -21,9 +25,11 @@ import { PrimengModule } from './primeng/primeng.module';
   ],
   exports: [
     CommonModule,
+    TableGenericComponent,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    TruncatePipe,
     ValidationMessageDirective,
     SectionLayoutComponent,
     TableDynamicComponent,

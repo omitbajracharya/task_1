@@ -1,78 +1,41 @@
-// Sidebar Styles
-.sidebar {
-  background-color: #f8f9fa;
-  height: 100vh;
-  padding-top: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.sidebar-header {
-  text-align: center;
-  margin-bottom: 20px;
-  cursor: default;
-}
-
-.sidebar ul {
-  padding-left: 0;
-}
-
-.sidebar .nav-link {
-  color: #343a40;
-}
-
-.sidebar .nav-link.active {
-  font-weight: bold;
-}
-
-// Main Content Styles
-.dashboard-header {
-  background-color: #343a40;
-  color: #fff;
+.dashboard-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
   padding: 20px;
 }
 
-.dashboard-content {
+.dashboard-box {
+  border-radius: 12px;
   padding: 20px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  border: 1px solid;
+  font-family: Arial, sans-serif;
 }
 
-.card {
-  margin-bottom: 20px;
+/* Box colors */
+.box-total-sales {
+  background-color: #e0f2fe;
+  border-color: #60a5fa;
+  color: #1e40af;
 }
 
-.card-title {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
+.box-today-sales {
+  background-color: #dcfce7;
+  border-color: #4ade80;
+  color: #166534;
 }
 
-// Table Styles
-.table {
-  width: 100%;
-  border-collapse: collapse;
+.box-popular-item {
+  background-color: #fff7ed;
+  border-color: #fbbf24;
+  color: #92400e;
 }
 
-.table th,
-.table td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #dee2e6;
+h2 {
+  margin: 0 0 10px 0;
 }
 
-.table th {
-  background-color: #f8f9fa;
-}
-
-// Badge Styles
-.badge {
-  padding: 6px 10px;
-  border-radius: 4px;
-}
-
-.badge-success {
-  background-color: #28a745;
-  color: #fff;
-}
-
-.badge-warning {
-  background-color: #ffc107;
-  color: #212529;
+p {
+  margin: 4px 0;
 }

@@ -20,16 +20,37 @@ export class AuthService {
   constructor(
     private router: Router,
     private api: ApiService
-  ) {}
+  ) {
+    this.loadUserFromToken();
+  }
+
+  // Call this on app start to load user if token exists
+  loadUserFromToken() {
+    const token = this.getToken();
+    if (!token) return;
+
+    try {
+      const decoded = this.jwtHelper.decodeToken(token);
+      // Build User object from token payload
+      const user: User = {
+        id: decoded.sub,
+        username: decoded.username,
+        role: decoded.role
+      };
+      this.currentUserSubject.next(user);
+    } catch (error) {
+      this.logout();
+    }
+  }
 
   login(username: string, password: string): Observable<boolean> {
     return this.api.getUsers().pipe(
-      map((users:any) => {
-        const user = users.find((u:any) => 
-          u.username === username && 
+      map((users: any) => {
+        const user = users.find((u: any) =>
+          u.username === username &&
           u.password === password
         );
-        
+
         if (user) {
           const mockToken = this.generateMockToken(user);
           localStorage.setItem(this.TOKEN_KEY, mockToken);
@@ -39,6 +60,10 @@ export class AuthService {
         return false;
       })
     );
+  }
+
+  getRole(): Role | null {
+    return this.getCurrentUserRole();
   }
 
   logout(): void {

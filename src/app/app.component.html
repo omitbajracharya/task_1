@@ -6,11 +6,13 @@
 ></app-header>
 
   <div class="main-content">
-    <app-sidebar #sidebar [(collapsed)]="isSidebarCollapsed" *ngIf="!hideSidebar()"></app-sidebar>
+    <app-sidebar #sidebar *ngIf="!hideSidebar()"></app-sidebar>
 
     <main class="content-area" [class.sidebar-collapsed]="isSidebarCollapsed">
       <app-breadcrumb *ngIf="!hideBreadcrumb()"></app-breadcrumb>
-      <router-outlet></router-outlet>
+      <div style="overflow-y: auto;height: 100%;">
+        <router-outlet></router-outlet>
+      </div>
     </main>
   </div>
   <app-footer *ngIf="!hideFooter()"></app-footer>

@@ -1,0 +1,109 @@
+<!-- table-dynamic.component.html -->
+<div class="card">
+    <div class="card-body">
+       <div class="d-flex  btn-print" style="justify-content: end;" *ngIf="showPrint">
+          <div class="dt-buttons">   
+            <button (click)="print()" class="dt-button buttons-print" tabindex="0" aria-controls="vid" type="button"><span><i class="fas fa-print"></i> </span></button> 
+            <button (click)="exportDOMTable()" class="dt-button buttons-excel buttons-html5" tabindex="0" aria-controls="vid" type="button"><span><i class="fas fa-file-excel"></i> </span></button> 
+          </div>
+        </div>
+      <div class="table-responsive"  [id]="individualId">
+        <div class="d-flex  btn-print" style="padding-right: 10px; font-size: 25px; font-weight: 600; justify-content: space-between;gap: 20px; flex-wrap: wrap;padding-bottom: 10px;align-items: center;">
+          <h5 *ngIf="tableTitle" class="tbl-heading" style="text-align: center;flex: 1;">{{tableTitle}}</h5>
+          <!-- <div class="dt-buttons">   
+            <button (click)="printIndividual()" class="dt-button buttons-print" tabindex="0" aria-controls="vid" type="button"><span><i class="fas fa-print"></i> </span></button> 
+          </div> -->
+        </div>
+        <table class="dataTable row-border hover">
+          <thead>
+            <tr>
+              <th *ngIf="showSerialNumber" [style]="{width: '50px'}">{{serialNumberText}}</th>
+              <th *ngFor="let col of visibleColumns" 
+                  [style]="col.headerStyles || col.customStyles || {}"
+                  [class.sortable]="col.sortable"
+                  (click)="onSort(col)" [style]="{'width':col?.width??''}">
+                {{col.title}}
+                <span *ngIf="currentSort?.column === col.bindValue" class="sort-icon">
+                  {{currentSort?.direction === 'asc' ? '↑' : '↓'}}
+                </span>
+              </th>
+              <th *ngIf="rowActions.length > 0">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- {{data | json}} -->
+            <ng-container *ngIf="data && data.length > 0; else noData">
+              <tr *ngFor="let row of data; let i = index">
+                <!-- {{i}}-{{data.length}} -->
+                <td *ngIf="showSerialNumber && data.length > (i+1)">{{i + 1}}</td>
+                <td *ngIf="showSerialNumber && data.length <= (i+1)"></td>
+                <td *ngFor="let col of visibleColumns" [style]="col.customStyles || { }"  [ngClass]="{ 'text-right': col?.isAmount }" [style]="col?.width?{'width': col?.width}:{}" >
+                  <ng-container [ngSwitch]="col.inputType">
+                    <!-- Image Type -->
+                    <span *ngSwitchCase="'image'">
+                      <img [src]="row[col.bindValue]" alt="" class="table-image" *ngIf="row[col.bindValue]">
+                      <span *ngIf="!row[col.bindValue]">-</span>
+                    </span>
+                    
+                    <!-- Boolean Type -->
+                    <span *ngSwitchCase="'boolean'">
+                      <span class="badge" [ngClass]="{
+                        'badge-success': row[col.bindValue],
+                        'badge-danger': !row[col.bindValue]
+                      }">
+                        {{row[col.bindValue] ? 'Yes' : 'No'}}
+                      </span>
+                    </span>
+                    
+                    <!-- Currency Type -->
+                    <span *ngSwitchCase="'currency'">
+                      {{row[col.bindValue] | currency:'USD':'symbol':'1.2-2'}}
+                    </span>
+                    
+                    <!-- Date Type -->
+                    <span *ngSwitchCase="'date'">
+                      {{row[col.bindValue] | date:'mediumDate'}}
+                    </span>
+                    
+                   <!-- In the ngSwitchCase for 'custom' -->
+                    <span *ngSwitchCase="'custom'">
+                        <ng-container *ngIf="getSafeTemplate(col.cellTemplate) as template">
+                        <ng-container *ngTemplateOutlet="template; context: {$implicit: row}"></ng-container>
+                        </ng-container>
+                    </span>
+                    <!-- Default (Text) -->
+                    <span *ngSwitchDefault>
+                       <!-- <ng-container *ngIf="(data.length - 1) == i && row[col.bindValue] =='Total'">जम्मा</ng-container>
+                       <ng-container *ngIf="(data.length - 1) == i && row[col.bindValue] !=='Total'">{{row[col.bindValue] ?? '-'}}</ng-container> 
+                       <ng-container *ngIf="(data.length - 1) < i">{{row[col.bindValue] ?? '-'}}</ng-container>  -->
+                      {{row[col.bindValue] ?? '-'}}
+                    </span>
+                  </ng-container>
+                </td>
+                
+                <!-- Row Actions -->
+                <td *ngIf="rowActions.length > 0" class="action-cell">
+                  <div class="btn-group">
+                    <button *ngFor="let action of rowActions" 
+                            class="btn btn-sm"
+                            [title]="action.label"
+                            (click)="onActionClick(action.action, row)">
+                      <i [class]="'fa fa-' + action.icon"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #noData>
+    <tr>
+      <td [attr.colspan]="visibleColumns.length + (showSerialNumber ? 1 : 0) + (rowActions.length > 0 ? 1 : 0)">
+        <div class="text-center py-3">{{emptyMessage}}</div>
+      </td>
+    </tr>
+  </ng-template>

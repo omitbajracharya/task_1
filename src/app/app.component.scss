@@ -3,19 +3,49 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  height: 100vh;
 }
 
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Main layout */
 .main-content {
   display: flex;
+  flex: 1;
+  overflow: hidden; /* prevent double scrollbars */
 }
 
+/* Sidebar */
+app-sidebar {
+  height: 100%;
+}
+
+/* Content area */
 .content-area {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   transition: margin-left 0.3s ease;
 }
 
 .content-area.sidebar-collapsed {
   margin-left: 60px;
+}
+
+/* Breadcrumb + router outlet container */
+.content-area > div {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Footer always at bottom */
+app-footer {
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
@@ -26,10 +56,4 @@
   .content-area.sidebar-collapsed {
     margin-left: 0;
   }
-}
-
-.sticky-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000; 
 }

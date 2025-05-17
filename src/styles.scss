@@ -11,27 +11,33 @@
     --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
-  :root {
-    --primary-color: #4361ee;
-    --primary-dark: #3a56d4;
-    --error-color: #f94144;
-    --light-gray: #f8f9fa;
-    --dark-gray: #6c757d;
-    --white: #ffffff;
-    --black: #212529;
-    --border-radius: 8px;
-    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+
+$gray-25: #fcfcfd;
+$gray-50: #f9fafb;
+$gray-100: #f2f4f7;
+$gray-200: #eaecf0;
+$gray-300: #d0d5dd;
+$gray-400: #98a2b3;
+$gray-500: #667085;
+$gray-600: #475467;
+$gray-700: #344054;
+$gray-800: #1d2939;
+$gray-900: #101828;
 
   * {
     margin: 0px;
     padding: 0px;
   }
-  
+
   html, body {
     height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* prevent body scroll, delegate to content */
   }
-  
+  .cursor-pointer {
+    cursor: pointer;
+  }
   .container-fluid {
     height: 100%;
   }
@@ -110,3 +116,43 @@
   @keyframes spin {
     to { transform: rotate(360deg); }
   }
+
+  .custom-tooltip {
+    position: absolute;
+    background: #333;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    z-index: 9999;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+  
+
+  /* For WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b; /* Dark blue-gray (slate-800) */
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3b82f6; /* Blue-500 */
+  border-radius: 5px;
+  border: 2px solid #1e293b; /* Matches track */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb; /* Blue-600 (darker on hover) */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #60718d #153b61; /* thumb track */
+}

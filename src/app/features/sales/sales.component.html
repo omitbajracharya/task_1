@@ -1,1 +1,85 @@
-<p>sales works!</p>
+<div class="sales-container">
+    <h2>Sales System</h2>
+  
+    <input
+      type="text"
+      placeholder="Search item..."
+      [(ngModel)]="searchTerm"
+      (input)="searchItems()"
+    />
+  
+    <table style="margin-top: 10px;">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Stock</th>
+          <th>Sold</th>
+          <th>Sell Quantity</th>
+          <th>Sell</th>
+          <th>Restock Quantity</th>
+          <th>Restock</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items">
+          <td>{{ item.name }}</td>
+          <td>{{ item.stock }}</td>
+          <td>{{ item.sold }}</td>
+  
+          <td>
+            <input
+              type="number"
+              min="1"
+              [(ngModel)]="sellQuantities[item.id]"
+              [value]="sellQuantities[item.id] || 1"
+            />
+          </td>
+          <td>
+            <button
+              [disabled]="item.stock === 0"
+              (click)="sellItem(item.id)"
+            >
+              Sell
+            </button>
+          </td>
+  
+          <td>
+            <input
+              type="number"
+              min="1"
+              [(ngModel)]="restockQuantities[item.id]"
+              [value]="restockQuantities[item.id] || 1"
+            />
+          </td>
+          <td>
+            <button (click)="restockItem(item.id)">Restock</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <h3>Sales History</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Sale ID</th>
+          <th>Item ID</th>
+          <th>Quantity</th>
+          <th>Total</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sale of salesHistory">
+          <td>{{ sale.id }}</td>
+          <td>{{ sale.itemId }}</td>
+          <td>{{ sale.quantity }}</td>
+          <td>{{ sale.total | currency }}</td>
+          <td>{{ sale.date | date: 'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div *ngIf="loading">Loading...</div>
+  </div>
+  

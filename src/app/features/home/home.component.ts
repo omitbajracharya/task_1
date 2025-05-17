@@ -10,7 +10,8 @@ import { DashboardStats } from '../../shared/models/dashboard.model';
 export class HomeComponent {
   dashboardStats: DashboardStats | null = null;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) {
+  }
 
   ngOnInit(): void {
     this.loadDashboardStats();

@@ -1,39 +1,111 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AuthService } from '../../shared/services/auth.service';
-import { Role } from '../../shared/models/role.model';  // Import Role enum
+import { Component } from '@angular/core';
+import { faChevronLeft, faChevronRight, faAngleDown, faAngleUp, faCaretRight, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+
+export interface MenuItem {
+  label: string;
+  icon: string;
+  route?: string;
+  roles: string[];
+  children?: MenuItem[];
+}
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss'],
+  styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
-  @Input() collapsed = false;
-  @Output() collapsedChange = new EventEmitter<boolean>();
+  faChevronLeft = faChevronLeft;
+  faChevronRight = faChevronRight;
+  faAngleDown = faAngleDown;
+  faAngleUp = faAngleUp;
+  faCaretRight = faCaretRight;
+  faSignOutAlt = faSignOutAlt;
 
-  adminMenuItems = [
-    { label: 'User Management', icon: 'fas fa-users', link: '/users' },
-    { label: 'Role Management', icon: 'fas fa-user-tag', link: '/roles' },
-    { label: 'System Settings', icon: 'fas fa-cogs', link: '/settings' },
+  userRole = 'admin';
+  isSidebarCollapsed = false;
+  expandedMenus: { [key: number]: boolean } = {};
+
+  menuItems: MenuItem[] = [
+    {
+      label: 'Dashboard',
+      icon: 'house',
+      route: '/dashboard',
+      roles: ['admin', 'user']
+    },
+    {
+      label: 'User',
+      icon: 'users-gear',
+      roles: ['admin'],
+      children: [
+        { label: 'Add User', route: '/users/add', icon: 'user-plus', roles: ['admin'] },
+        { label: 'View Users', route: '/users', icon: 'address-book', roles: ['admin'] }
+      ]
+    },
+    {
+      label: 'Product',
+      icon: 'users-gear',
+      roles: ['admin'],
+      children: [
+        { label: 'View Products', route: '/products', icon: 'address-book', roles: ['admin'] },
+        { label: 'Add Product', route: '/products/add', icon: 'user-plus', roles: ['admin'] },
+        { label: 'Edit Product', route: '/products/edit', icon: 'address-book', roles: ['admin'] }
+      ]
+    },
+    {
+      label: 'Order',
+      icon: 'users-gear',
+      roles: ['admin'],
+      children: [
+        { label: 'View Orders', route: '/orders', icon: 'address-book', roles: ['admin'] },
+        { label: 'Add Order', route: '/orders/add', icon: 'user-plus', roles: ['admin'] },
+        { label: 'Edit Order', route: '/orders/edit', icon: 'address-book', roles: ['admin'] }
+      ]
+    },
+    {
+      label: 'Sales',
+      icon: 'cart-shopping',
+      roles: ['admin', 'sales'],
+      children: [
+        { label: 'Add Sale', route: '/sales/add', icon: 'cart-plus', roles: ['admin', 'sales'] },
+        { label: 'View Sales', route: '/sales', icon: 'file-invoice-dollar', roles: ['admin', 'sales'] }
+      ]
+    }
   ];
+  
+  
 
-  constructor(public authService: AuthService) {}
+  toggleSidebar() {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+    if (this.isSidebarCollapsed) {
+      this.expandedMenus = {}; // Reset submenu states
+    }
+  }
+  
+  
 
-  toggleCollapse() {
-    this.collapsed = !this.collapsed;
-    this.collapsedChange.emit(this.collapsed);
+  toggleMenu(index: number): void {
+    // First, collapse all other menus
+    Object.keys(this.expandedMenus).forEach(key => {
+      if (Number(key) !== index) {
+        this.expandedMenus[Number(key)] = false;
+      }
+    });
+    
+    // Then toggle the current menu
+    this.expandedMenus[index] = !this.expandedMenus[index];
   }
 
-  // Getters to check if the user has specific roles using AuthService
-  get isAdmin() {
-    return this.authService.hasRole(Role.Admin);  // Use Role enum here (numeric value 1)
+  isVisible(item: MenuItem): boolean {
+    return item.roles.includes(this.userRole);
   }
 
-  get isSupervisor() {
-    return this.authService.hasRole(Role.Supervisor);  // Use Role enum here (numeric value 2)
+  trackByFn(index: number, item: MenuItem): string {
+    return item.label;
   }
 
-  get isSalesPerson() {
-    return this.authService.hasRole(Role.SalesPerson);  // Use Role enum here (numeric value 3)
+  logout() {
+    console.log('Logout');
   }
 }
+

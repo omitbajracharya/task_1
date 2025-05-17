@@ -3,7 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProductsComponent } from './products.component';
 
 const routes: Routes = [
-  { path: '', component: ProductsComponent }  // Default route within this module
+  { path: '', component: ProductsComponent },  
+  { path: 'add', component: ProductsComponent },  
+  { path: 'edit', component: ProductsComponent }  
 ];
 
 @NgModule({

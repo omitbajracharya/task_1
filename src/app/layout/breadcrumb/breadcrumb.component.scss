@@ -1,16 +1,22 @@
+.nav {
+  height: 100%;
+}
 .breadcrumb {
-    background-color: transparent;
-    margin-bottom: 20px;
-    padding: 0;
+    background-color: rgb(193, 208, 241);
+    height: 100%;
+    padding: 8px;
+    margin-bottom: 0px;
   }
   
   .breadcrumb-item {
     display: inline-block;
-    font-size: 14px;
+    font-size: 18px;
+    font-weight: 700;
   }
   
   .breadcrumb-item + .breadcrumb-item::before {
-    content: '>';
+    content: '>' !important;;
     padding: 0 8px;
   }
       
+  $breadcrumb-divider: quote(">");

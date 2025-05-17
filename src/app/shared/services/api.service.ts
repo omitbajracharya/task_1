@@ -1,10 +1,11 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Observable, of, delay } from 'rxjs';
+import { Observable, of, delay, throwError, map } from 'rxjs';
 import { User } from '../models/user.model';
 import { Role } from '../models/role.model';
 import { Item } from '../models/item.model';
 import { Sale } from '../models/sale.model';
 import { isPlatformBrowser } from '@angular/common';
+import { Product } from '../models/product.model';
 
 interface RoleData {
   id: Role;
@@ -22,6 +23,7 @@ interface DashboardStats {
   providedIn: 'root',
 })
 export class ApiService {
+  private readonly PRODUCT_STORAGE_KEY = 'products';
   constructor(@Inject(PLATFORM_ID) private platformId: object) {
     if (this.isBrowser()) {
       this.initializeData();
@@ -84,6 +86,7 @@ export class ApiService {
   // User CRUD
   getUsers(): Observable<User[]> {
     if (this.isBrowser()) {
+      debugger;
       const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
       return of(users).pipe(delay(this.getRandomDelay()));
     }
@@ -272,5 +275,88 @@ export class ApiService {
 
   private generateId(items: { id: number }[]): number {
     return items.length > 0 ? Math.max(...items.map(i => i.id)) + 1 : 1;
+  }
+
+  // Get all products
+  getProducts(): Observable<Product[]> {
+    try {
+      const productsJson = localStorage.getItem(this.PRODUCT_STORAGE_KEY);
+      const products = productsJson ? JSON.parse(productsJson) : [];
+      return of(products.map((p: any) => new Product(
+        p.id,
+        p.name,
+        p.price,
+        p.description,
+        p.category,
+        p.stock,
+        p.imageUrl
+      ))).pipe(delay(500)); // Simulate network delay
+    } catch (error) {
+      return throwError(() => new Error('Failed to load products'));
+    }
+  }
+
+  // Get single product
+  getProduct(id: number): Observable<Product> {
+    return this.getProducts().pipe(
+      map(products => {
+        const product = products.find(p => p.id === id);
+        if (!product) throw new Error('Product not found');
+        return product;
+      })
+    );
+  }
+  // Create new product
+  createProduct(product: Product): Observable<Product> {
+    return this.getProducts().pipe(
+      map(products => {
+        // Generate new ID (max existing ID + 1)
+        const newId = products.length > 0 
+          ? Math.max(...products.map(p => p.id)) + 1 
+          : 1;
+        
+        const newProduct = new Product(
+          newId,
+          product.name,
+          product.price,
+          product.description,
+          product.category,
+          product.stock,
+          product.imageUrl
+        );
+
+        const updatedProducts = [...products, newProduct];
+        localStorage.setItem(this.PRODUCT_STORAGE_KEY, JSON.stringify(updatedProducts));
+        
+        return newProduct;
+      })
+    );
+  }
+
+  // Update product
+  updateProduct(product: Product): Observable<Product> {
+    return this.getProducts().pipe(
+      map(products => {
+        const index = products.findIndex(p => p.id === product.id);
+        if (index === -1) throw new Error('Product not found');
+
+        const updatedProducts = [...products];
+        updatedProducts[index] = product;
+        localStorage.setItem(this.PRODUCT_STORAGE_KEY, JSON.stringify(updatedProducts));
+        
+        return product;
+      })
+    );
+  }
+
+  // Delete product
+  deleteProduct(id: number): Observable<void> {
+    return this.getProducts().pipe(
+      map(products => {
+        const updatedProducts = products.filter(p => p.id !== id);
+        localStorage.setItem(this.PRODUCT_STORAGE_KEY, JSON.stringify(updatedProducts));
+        return undefined;
+      })
+    );
   }
 }

@@ -1,40 +1,98 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/">Sales System</a>
+    <!-- Brand -->
+    <a class="navbar-brand" routerLink="/home">Sales System</a>
+
+    <!-- Mobile toggle button -->
     <button class="navbar-toggler" type="button" (click)="toggleCollapse()">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- Navbar items -->
     <div class="collapse navbar-collapse" [class.show]="!isCollapsed">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <!-- Dashboard Link -->
         <li class="nav-item" *ngIf="isAdmin || isSupervisor">
-          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+          <a class="nav-link" routerLink="/home
+          " routerLinkActive="active">Dashboard</a>
         </li>
-        <!-- Other Links... -->
       </ul>
 
-      <!-- User Info and Logout -->
-      <div class="d-flex">
-        <ul class="navbar-nav">
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="userDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-            >
-              {{ currentUser?.username }}
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#">Profile</a></li>
-              <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+      <!-- Right-side user dropdown -->
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item dropdown">
+          <a
+          aria-haspopup="true"
+          aria-expanded="false"
+            class="nav-link dropdown-toggle d-flex align-items-center"
+            id="userDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            (mouseenter)="onButtonHover()"
+            (mouseleave)="onButtonLeave()"
+            (click)="isDropdownOpen = !isDropdownOpen"
+          >
+            <div class="headerProfile">
+              <span class="profileImg">
+                <i class="fa-solid fa-user"></i>
+                <span class="status-dot active"></span>
+              </span>
+            </div>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end headerProfileDropdown" aria-labelledby="userDropdown" [class.show]="isDropdownOpen"
+          (mouseenter)="onDropdownEnter()"
+          (mouseleave)="onDropdownLeave()">
+            <!-- Profile Card -->
+            <li>
+              <div class="profileCard d-flex" style="flex-direction: column;align-items: center;">
+                <span class="profileImg">
+                  <i class="fa-solid fa-user"></i>
+                  <span class="status-dot active"></span>
+                </span>
+                <div class="profileCardInfo">
+                  <h6 class="profileName">{{ currentUser?.username }}</h6>
+                  <div class="badge">{{ getRole() }}</div>
+                </div>
+              </div>
+            </li>
+
+            <li><hr class="dropdown-divider" /></li>
+
+            <!-- Change Password -->
+            <li class="cursor-pointer">
+              <a class="dropdown-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#change-password-global-model">
+                <i class="fa-solid fa-key"></i> Change Password
+              </a>
+            </li>
+
+            <!-- Language Switch -->
+            <li>
+              <a class="dropdown-item justify-content-between">
+                <span class="flex-h-center">
+                  <i class="fa-solid fa-language"></i> Switch Language
+                </span>
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input cursor-pointer"
+                    type="checkbox"
+                    id="switch-language"
+                    (click)="Switchlanguage()"
+                  />
+                </div>
+              </a>
+            </li>
+
+            <li><hr class="dropdown-divider" /></li>
+
+            <!-- Logout -->
+            <li class="cursor-pointer">
+              <button class="dropdown-item" (click)="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i> Log out
+              </button>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>

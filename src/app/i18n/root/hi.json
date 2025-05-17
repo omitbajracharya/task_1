@@ -1,0 +1,13 @@
+{
+    "login": {
+      "title": "लॉग इन करें",
+      "username": "उपयोगकर्ता नाम",
+      "password": "कुंजिका",
+      "passwordForgot": "पासवर्ड भूल गए ?",
+      "signinButton": "दाखिल करना"
+    },
+    "error": {
+      "userError": "कृपया उपयोगकर्तानाम डालें",
+      "passwordError": "कृप्या पास्वर्ड भरो"
+    }
+  }

@@ -1,17 +1,15 @@
-import { NgModule } from '@angular/core';
+import { Inject, NgModule, PLATFORM_ID } from '@angular/core';
 import {
   BrowserModule,
   provideClientHydration,
 } from '@angular/platform-browser';
-
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
-import { HomeComponent } from './features/home/home.component';
-import { ProductComponent } from './features/product/product.component';
-import { OrderComponent } from './features/order/order.component';
+import { HomeComponent } from './features/home/home.component'; 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptorService } from './core/services/http-interceptor.service';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
@@ -30,13 +28,15 @@ import { SalesComponent } from './features/sales/sales.component';
 import { TooltipDirective } from './shared/directives/tooltip.directive';
 import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
 import { FooterComponent } from './layout/footer/footer.component';
+import { RegisterUserComponent } from './features/register-user/register-user.component';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { AddSaleComponent } from './features/sales/add-sale/add-sale.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    ProductComponent,
-    OrderComponent,
     SidebarComponent,
     HeaderComponent,
     LoginComponent,
@@ -53,11 +53,16 @@ import { FooterComponent } from './layout/footer/footer.component';
     TooltipDirective,
     BreadcrumbComponent,
     FooterComponent,
+    RegisterUserComponent,
+    AddSaleComponent,
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    ReactiveFormsModule, 
+    FormsModule,   
     CoreModule,
     AppRoutingModule,
     SharedModule,
@@ -72,4 +77,21 @@ import { FooterComponent } from './layout/footer/footer.component';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {
+    const admin = {
+      id:1,
+      username: 'omit.com.np',
+      password:'Admin@123',
+      role:'Admin'
+    }
+    if(this.isBrowser()) {
+      const loginCredential = [];
+      loginCredential.push(admin);
+      localStorage.setItem('users',JSON.stringify(loginCredential));
+    }
+  }
+  private isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
+}
